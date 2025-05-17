@@ -1,6 +1,7 @@
-[gd_scene load_steps=34 format=3 uid="uid://daiipt5hwl6k0"]
+[gd_scene load_steps=36 format=3 uid="uid://daiipt5hwl6k0"]
 
 [ext_resource type="Texture2D" uid="uid://bky8rgf4dtfxk" path="res://Assets/Character0_Walk.png" id="1_3ndfa"]
+[ext_resource type="Script" uid="uid://bxpphg2i11xlo" path="res://Escenas/character_body_2d.gd" id="1_e6cd0"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e6cd0"]
 atlas = ExtResource("1_3ndfa")
@@ -49,6 +50,10 @@ region = Rect2(1840, 460, 460, 460)
 [sub_resource type="AtlasTexture" id="AtlasTexture_3yiu5"]
 atlas = ExtResource("1_3ndfa")
 region = Rect2(2300, 460, 460, 460)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ptduk"]
+atlas = ExtResource("1_3ndfa")
+region = Rect2(0, 0, 460, 460)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v2jl6"]
 atlas = ExtResource("1_3ndfa")
@@ -172,6 +177,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ptduk")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_v2jl6")
 }, {
 "duration": 1.0,
@@ -240,17 +253,18 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3ndfa"]
-radius = 15.0
-height = 64.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e6cd0"]
+size = Vector2(22, 30)
 
 [node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_e6cd0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_ptduk")
-animation = &"walk_up"
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 7)
-shape = SubResource("CapsuleShape2D_3ndfa")
+position = Vector2(0, 23)
+shape = SubResource("RectangleShape2D_e6cd0")
+metadata/_edit_group_ = true
