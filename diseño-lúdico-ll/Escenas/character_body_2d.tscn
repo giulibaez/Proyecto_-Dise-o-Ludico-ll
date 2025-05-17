@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://daiipt5hwl6k0"]
+[gd_scene load_steps=34 format=3 uid="uid://daiipt5hwl6k0"]
 
 [ext_resource type="Texture2D" uid="uid://bky8rgf4dtfxk" path="res://Assets/Character0_Walk.png" id="1_3ndfa"]
 
@@ -240,10 +240,17 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3ndfa"]
+radius = 15.0
+height = 64.0
+
 [node name="Player" type="CharacterBody2D"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_ptduk")
-animation = &"Walk_ diagonal_ up"
-frame = 2
-frame_progress = 0.309064
+animation = &"walk_up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 7)
+shape = SubResource("CapsuleShape2D_3ndfa")
