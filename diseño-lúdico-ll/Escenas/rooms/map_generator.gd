@@ -16,7 +16,7 @@ func _ready():
 func generate_map(): # se arma el mapa de habitaciones 
 	var positions = [ #posiciones bases; cuadricula 2X2
 		Vector2(0, 0),
-		Vector2(256, 0),
+		Vector2(512, 0),
 		Vector2(0, 256),
 		Vector2(256, 256)
 	]
@@ -34,5 +34,13 @@ func generate_map(): # se arma el mapa de habitaciones
 		# Llamar a la función generate() dei la habitación para que genere su contenido
 		if room_instance.has_method("generate"):
 			room_instance.generate()
+		
+		var connectors = {
+			"top": room_instance.get_node_or_null("ConnectorT"),
+			"down": room_instance.get_node_or_null ("ConnectorD"),
+			"right":  room_instance.get_node_or_null ("ConnectorR"),
+			"left":  room_instance.get_node_or_null ("ConnectorL")
+		}
+		room_instance.set("connectors", connectors)
 		
 		rooms.append(room_instance)# guarda la intancia en la lista de habitaciones 
