@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1c0jnif02mno"]
+
+[ext_resource type="Script" uid="uid://bk4fjhryo7mvs" path="res://Escenas/rooms/room_lab_generator.gd" id="1_4lwik"]
+[ext_resource type="TileSet" uid="uid://boh3bl3l77wrd" path="res://Recursos/tileset_rooms.tres" id="2_52dhw"]
+
+[node name="RoomLab" type="Node2D"]
+script = ExtResource("1_4lwik")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("2_52dhw")
+format = 2
+
+[node name="Floors" type="TileMapLayer" parent="TileMap"]
+use_parent_material = true
+tile_set = ExtResource("2_52dhw")
+
+[node name="Walls" type="TileMapLayer" parent="TileMap"]
+use_parent_material = true
+tile_set = ExtResource("2_52dhw")
+
+[node name="DoorT" type="Marker2D" parent="."]
+
+[node name="DoorD" type="Marker2D" parent="."]
+
+[node name="DoorR" type="Marker2D" parent="."]
+
+[node name="DoorL" type="Marker2D" parent="."]
