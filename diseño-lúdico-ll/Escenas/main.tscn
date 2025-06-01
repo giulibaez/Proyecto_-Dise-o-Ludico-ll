@@ -12,4 +12,8 @@ visible = false
 [node name="MapGenerator" parent="." instance=ExtResource("3_0kh0y")]
 
 [node name="Player" parent="." instance=ExtResource("2_0kh0y")]
+visible = false
 position = Vector2(178, 144)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.02, 0.02)
