@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://daiipt5hwl6k0"]
+[gd_scene load_steps=43 format=3 uid="uid://daiipt5hwl6k0"]
 
 [ext_resource type="Texture2D" uid="uid://bky8rgf4dtfxk" path="res://Assets/Character0_Walk.png" id="1_3ndfa"]
 [ext_resource type="Script" uid="uid://bxpphg2i11xlo" path="res://Escenas/player.gd" id="1_e6cd0"]
@@ -293,6 +293,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_qgqwx"]
+radius = 30.0
+
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_e6cd0")
@@ -318,3 +321,12 @@ scale = Vector2(0.347566, 0.321429)
 sprite_frames = SubResource("SpriteFrames_b21vg")
 animation = &"Vida "
 frame_progress = 0.322845
+
+[node name="HitBoxArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 9
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxArea"]
+position = Vector2(24, 2)
+shape = SubResource("CircleShape2D_qgqwx")

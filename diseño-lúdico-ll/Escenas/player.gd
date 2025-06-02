@@ -9,6 +9,7 @@ var current_health= 3
 
 @onready var heart_sound = $HeartSound
 @onready var heart_display = $Node/Vida
+@onready var hitbox_area = $HitBoxArea
 
 func _physics_process(delta: float) -> void:
 	move()
@@ -89,3 +90,14 @@ func update_hearts_display():
 			heart_display.frame = 2
 		0:
 			heart_display.frame = 3
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("attack"):
+		perform_attack()
+		
+
+func perform_attack():
+	hitbox_area.monitoring = true
+	await get_tree().create_timer(0.2).timeout#el golpe dura 2 seg
+	hitbox_area.monitoring = false
+	
