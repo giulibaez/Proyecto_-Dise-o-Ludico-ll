@@ -1,7 +1,8 @@
-[gd_scene load_steps=36 format=3 uid="uid://daiipt5hwl6k0"]
+[gd_scene load_steps=42 format=3 uid="uid://daiipt5hwl6k0"]
 
 [ext_resource type="Texture2D" uid="uid://bky8rgf4dtfxk" path="res://Assets/Character0_Walk.png" id="1_3ndfa"]
 [ext_resource type="Script" uid="uid://bxpphg2i11xlo" path="res://Escenas/player.gd" id="1_e6cd0"]
+[ext_resource type="Texture2D" uid="uid://88e8y34vflbw" path="res://Assets/animatedsprite_heart_player.png" id="3_qgqwx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_e6cd0"]
 atlas = ExtResource("1_3ndfa")
@@ -256,6 +257,42 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e6cd0"]
 size = Vector2(22, 30)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_6njrx"]
+atlas = ExtResource("3_qgqwx")
+region = Rect2(0, 0, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgfde"]
+atlas = ExtResource("3_qgqwx")
+region = Rect2(0, 16, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xlwfv"]
+atlas = ExtResource("3_qgqwx")
+region = Rect2(0, 32, 48, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7v5l4"]
+atlas = ExtResource("3_qgqwx")
+region = Rect2(0, 48, 48, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b21vg"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6njrx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgfde")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xlwfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7v5l4")
+}],
+"loop": true,
+"name": &"Vida ",
+"speed": 5.0
+}]
+
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_e6cd0")
@@ -269,3 +306,15 @@ animation = &"idle"
 position = Vector2(0, 23)
 shape = SubResource("RectangleShape2D_e6cd0")
 metadata/_edit_group_ = true
+
+[node name="Node" type="Node" parent="."]
+
+[node name="HeartSound" type="AudioStreamPlayer" parent="Node"]
+
+[node name="Vida" type="AnimatedSprite2D" parent="Node"]
+texture_filter = 1
+position = Vector2(4.76837e-07, -18)
+scale = Vector2(0.347566, 0.321429)
+sprite_frames = SubResource("SpriteFrames_b21vg")
+animation = &"Vida "
+frame_progress = 0.322845
