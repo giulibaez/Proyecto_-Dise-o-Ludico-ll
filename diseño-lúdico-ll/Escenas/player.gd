@@ -101,3 +101,8 @@ func perform_attack():
 	await get_tree().create_timer(0.2).timeout#el golpe dura 2 seg
 	hitbox_area.monitoring = false
 	
+
+
+func _on_hit_box_area_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemies"):
+		body.take_damage(1)

@@ -10,13 +10,10 @@
 [node name="fondo" parent="." instance=ExtResource("1_vt1rs")]
 
 [node name="MapGenerator" parent="." instance=ExtResource("3_0kh0y")]
+visible = false
 
 [node name="RoomCell" parent="." instance=ExtResource("3_7xwpo")]
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("2_0kh0y")]
 position = Vector2(178, 144)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-visible = false
-zoom = Vector2(0.02, 0.02)

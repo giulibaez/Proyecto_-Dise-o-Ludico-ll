@@ -330,3 +330,5 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxArea"]
 position = Vector2(24, 2)
 shape = SubResource("CircleShape2D_qgqwx")
+
+[connection signal="body_entered" from="HitBoxArea" to="." method="_on_hit_box_area_body_entered"]
