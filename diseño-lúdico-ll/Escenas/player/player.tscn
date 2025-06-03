@@ -562,7 +562,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_qgqwx"]
-radius = 30.0
+radius = 36.0
 
 [node name="Player" type="CharacterBody2D"]
 scale = Vector2(0.5, 0.5)
@@ -598,7 +598,7 @@ collision_mask = 9
 monitoring = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxArea"]
-position = Vector2(24, 2)
+position = Vector2(0, 8)
 shape = SubResource("CircleShape2D_qgqwx")
 
 [connection signal="body_entered" from="HitBoxArea" to="." method="_on_hit_box_area_body_entered"]

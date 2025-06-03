@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://ch7pcm517a17t"]
+[gd_scene load_steps=30 format=3 uid="uid://ch7pcm517a17t"]
 
 [ext_resource type="Script" uid="uid://c0xborxd6sllk" path="res://Escenas/enemies/enemy.gd" id="1_1yhye"]
 [ext_resource type="Texture2D" uid="uid://bs81aptrt3j3m" path="res://Assets/character/enemy/animatedsprite_enemy_placeholder.png" id="2_eqnh0"]
@@ -202,6 +202,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_h3jmr"]
 radius = 67.0671
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_eqnh0"]
+radius = 38.0
+
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
 texture_filter = 1
 script = ExtResource("1_1yhye")
@@ -226,6 +229,12 @@ collision_mask = 5
 visible = false
 position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_h3jmr")
+
+[node name="HitBoxArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxArea"]
+position = Vector2(1, 8)
+shape = SubResource("CircleShape2D_eqnh0")
 
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
