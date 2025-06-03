@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bky8rgf4dtfxk"
-path="res://.godot/imported/Character0_Walk.png-7fed180b54558e3ad0cd1ea972734adc.ctex"
+uid="uid://bdo03kxfglvb5"
+path="res://.godot/imported/Character0_Die.png-72dc73dba31784baebaa141d0d3c0c67.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Character0_Walk.png"
-dest_files=["res://.godot/imported/Character0_Walk.png-7fed180b54558e3ad0cd1ea972734adc.ctex"]
+source_file="res://Assets/character/player/Character0_Die.png"
+dest_files=["res://.godot/imported/Character0_Die.png-72dc73dba31784baebaa141d0d3c0c67.ctex"]
 
 [params]
 

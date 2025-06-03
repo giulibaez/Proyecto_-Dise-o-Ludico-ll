@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b01g5je2ug3mw"
-path="res://.godot/imported/fondo.jpg-688ba89d455924c15789cc597828f0ad.ctex"
+uid="uid://bs81aptrt3j3m"
+path="res://.godot/imported/animatedsprite_enemy_placeholder.png-978d4b7414a1fe06e6f087344775ed33.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/fondo.jpg"
-dest_files=["res://.godot/imported/fondo.jpg-688ba89d455924c15789cc597828f0ad.ctex"]
+source_file="res://Assets/character/enemy/animatedsprite_enemy_placeholder.png"
+dest_files=["res://.godot/imported/animatedsprite_enemy_placeholder.png-978d4b7414a1fe06e6f087344775ed33.ctex"]
 
 [params]
 

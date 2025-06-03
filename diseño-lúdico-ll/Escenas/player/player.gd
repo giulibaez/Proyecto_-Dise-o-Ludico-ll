@@ -1,5 +1,5 @@
 extends CharacterBody2D
-var move_speed = 200
+var move_speed = 100
 var is_left = true
 @onready var Animated_sprite = $AnimatedSprite2D
 var current_direction = "none"
@@ -10,6 +10,7 @@ var current_health= 3
 @onready var heart_sound = $HeartSound
 @onready var heart_display = $Node/Vida
 @onready var hitbox_area = $HitBoxArea
+
 
 func _ready() -> void:
 	$AnimatedSprite2D.play("front_idle")
@@ -73,7 +74,6 @@ func play_animation(movement):
 			animation.play("front_walk")
 		elif movement == 0:
 			animation.play("front_idle")
-		
 		
 	if direction =="up":
 		if movement == 1:
