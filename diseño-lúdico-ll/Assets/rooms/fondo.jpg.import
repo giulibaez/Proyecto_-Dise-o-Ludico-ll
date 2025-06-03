@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://88e8y34vflbw"
-path="res://.godot/imported/animatedsprite_heart_player.png-10564da7b50af602d64b7139b084022a.ctex"
+uid="uid://b01g5je2ug3mw"
+path="res://.godot/imported/fondo.jpg-477e94e7051441b7f3f75c74a583bb09.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/animatedsprite_heart_player.png"
-dest_files=["res://.godot/imported/animatedsprite_heart_player.png-10564da7b50af602d64b7139b084022a.ctex"]
+source_file="res://Assets/rooms/fondo.jpg"
+dest_files=["res://.godot/imported/fondo.jpg-477e94e7051441b7f3f75c74a583bb09.ctex"]
 
 [params]
 

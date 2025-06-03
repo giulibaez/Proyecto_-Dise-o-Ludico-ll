@@ -182,3 +182,6 @@ func selective_new_position() -> Vector2i:
 			return pos
 	print("selective_new_position no encontró posición válida, devolviendo Vector2i.ZERO")
 	return Vector2i.ZERO
+
+
+#poner la cama en el jugador e intanciar al jugador en el 0,0/ probar 
