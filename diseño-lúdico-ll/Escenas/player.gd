@@ -2,7 +2,7 @@ extends CharacterBody2D
 var move_speed = 200
 var is_left = true
 @onready var Animated_sprite = $AnimatedSprite2D
-var last_direction = "down"
+var current_direction = "none"
 
 var max_health = 3
 var current_health= 3
@@ -11,53 +11,75 @@ var current_health= 3
 @onready var heart_display = $Node/Vida
 @onready var hitbox_area = $HitBoxArea
 
+func _ready() -> void:
+	$AnimatedSprite2D.play("front_idle")
+
+
+@warning_ignore("unused_parameter")
 func _physics_process(delta: float) -> void:
 	move()
-	flip()
-	animations()
 	move_and_slide()
 
-func flip ():
-	if (is_left and velocity.x > 0) or ( not is_left and velocity.x < 0): 
-		scale.x = -1
-		is_left = not is_left
-
-func animations():
-	if velocity.length() == 0:
-		Animated_sprite.play("idle_" + last_direction)
-		return 
-	if abs(velocity.x) > abs(velocity.y):
-		Animated_sprite.play("walk_right_left")
-		last_direction = "side"
-	elif velocity.y > 0:
-		Animated_sprite.play("walk_down")
-		last_direction = "down"
-	else:
-		Animated_sprite.play("walk_up")
-		last_direction = "up"
-
-	
 
 func move():
-	var vel_x := 0.0
-	var  vel_y := 0.0
 	# Movimiento horizontal
 	if Input.is_action_pressed("move_right"):
-		vel_x += 1
+		current_direction = "right"
+		play_animation(1)
+		velocity.x = move_speed
+		velocity.y = 0
 	elif Input.is_action_pressed("move_left"):
-		vel_x -= 1
+		current_direction = "left"
+		play_animation(1)
+		velocity.x = -move_speed
+		velocity.y = 0
 	 # Movimiento vertical
-	if Input.is_action_pressed("move_down"):
-		vel_y += 1
+	elif Input.is_action_pressed("move_down"):
+		current_direction = "down"
+		play_animation(1)
+		velocity.y = move_speed
+		velocity.x = 0
 	elif Input.is_action_pressed("move_up"):
-		vel_y -= 1
+		current_direction = "up"
+		play_animation(1)
+		velocity.y = -move_speed
+		velocity.x = 0
+	else:
+		play_animation(0)
+		velocity.x = 0
+		velocity.y = 0
+
+
+func play_animation(movement):
+	var direction = current_direction
+	var animation = $AnimatedSprite2D
 	
-	if vel_x != 0 and vel_y != 0:
-		vel_x *= 0.7071
-		vel_y *= 0.7071
+	if direction =="right":
+		animation.flip_h = true
+		if movement == 1:
+			animation.play("side_walk")
+		elif movement == 0:
+			animation.play("side_idle")
 		
-	velocity.x = vel_x * move_speed
-	velocity.y = vel_y * move_speed
+	if direction =="left":
+		animation.flip_h = false
+		if movement == 1:
+			animation.play("side_walk")
+		elif movement == 0:
+			animation.play("side_idle")
+		
+	if direction =="down":
+		if movement == 1:
+			animation.play("front_walk")
+		elif movement == 0:
+			animation.play("front_idle")
+		
+		
+	if direction =="up":
+		if movement == 1:
+			animation.play("back_walk")
+		elif movement == 0:
+			animation.play("back_idle")
 
 func  take_damage(cant: int):
 	current_health -= cant
