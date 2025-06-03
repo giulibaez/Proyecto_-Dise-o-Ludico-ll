@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://ch7pcm517a17t"]
+[gd_scene load_steps=29 format=3 uid="uid://ch7pcm517a17t"]
 
 [ext_resource type="Script" uid="uid://c0xborxd6sllk" path="res://Escenas/enemies/enemy.gd" id="1_1yhye"]
 [ext_resource type="Texture2D" uid="uid://bs81aptrt3j3m" path="res://Assets/character/enemy/animatedsprite_enemy_placeholder.png" id="2_eqnh0"]
@@ -199,8 +199,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_eqnh0"]
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_h3jmr"]
 radius = 67.0671
 
@@ -215,16 +213,17 @@ animation = &"walk"
 frame = 1
 frame_progress = 0.919362
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 texture_filter = 1
-position = Vector2(0, 6)
-shape = SubResource("CircleShape2D_eqnh0")
+position = Vector2(-7, 5)
+polygon = PackedVector2Array(-12, -9, -6, -13, 9, -13, 15, -7, 16, 0, 18, 3, 27, 6, 29, 11, 26, 18, 12, 16, 2, 17, -9, 16, -14, 12, -15, 3)
 
 [node name="DetectionArea" type="Area2D" parent="."]
 collision_layer = 8
 collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+visible = false
 position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_h3jmr")
 
