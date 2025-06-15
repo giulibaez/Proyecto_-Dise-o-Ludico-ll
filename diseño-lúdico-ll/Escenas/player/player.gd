@@ -12,6 +12,7 @@ var current_health= 3
 @onready var hitbox_area = $HitBoxArea
 
 
+
 func _ready() -> void:
 	$AnimatedSprite2D.play("front_idle")
 

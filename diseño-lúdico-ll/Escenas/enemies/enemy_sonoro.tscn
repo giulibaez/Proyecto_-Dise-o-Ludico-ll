@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://b25bx77unr2ic"]
+
+[ext_resource type="Script" uid="uid://d3dnlm1vs0ewl" path="res://Escenas/enemies/enemy_sonoro.gd" id="1_eh1lr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uokfn"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3v1h7"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"alert",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"attack ",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_fast ",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_sound ",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3v1h7"]
+radius = 17.0294
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eh1lr"]
+radius = 18.0
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_eh1lr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uokfn")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(4.17233e-07, 4.17233e-07)
+scale = Vector2(0.15625, 0.15625)
+sprite_frames = SubResource("SpriteFrames_3v1h7")
+animation = &"attack "
+
+[node name="DetectionArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+shape = SubResource("CircleShape2D_3v1h7")
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_eh1lr")
