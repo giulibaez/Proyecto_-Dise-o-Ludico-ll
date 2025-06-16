@@ -9,11 +9,12 @@
 
 [node name="RoomCell" parent="." instance=ExtResource("3_7xwpo")]
 
-[node name="Player" parent="." instance=ExtResource("2_0kh0y")]
-position = Vector2(178, 117)
-
 [node name="Enemy" parent="." instance=ExtResource("3_0kh0y")]
 position = Vector2(291, 84)
 
 [node name="EnemySonoro" parent="." instance=ExtResource("4_7xwpo")]
+visible = false
 position = Vector2(86, 73)
+
+[node name="Player" parent="." instance=ExtResource("2_0kh0y")]
+position = Vector2(178, 117)
