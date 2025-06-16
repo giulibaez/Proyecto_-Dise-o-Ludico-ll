@@ -11,7 +11,9 @@ var can_attack = true
 @onready var anim_enemy = $AnimatedSprite2D
 
 
+@onready var anim_enemy = $AnimatedSprite2D
 
+<<<<<<< Updated upstream
 func _physics_process(delta: float) -> void:
 	move()
 	deal_whit_damage()
@@ -19,6 +21,12 @@ func _physics_process(delta: float) -> void:
 func move():
 	if anim_enemy.is_playing() and anim_enemy.animation in ["hurt", "death","attack"]:
 		return
+=======
+func _ready() -> void:
+	anim_enemy.play("idle")
+
+func _physics_process(delta): 
+>>>>>>> Stashed changes
 	if player_chase:
 		position += (player.position - position)/speed 
 		anim_enemy.play("walk")
@@ -28,6 +36,10 @@ func move():
 			anim_enemy.flip_h = true
 	else:
 		anim_enemy.play("idle")
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 
 func take_damage(amount: int):
