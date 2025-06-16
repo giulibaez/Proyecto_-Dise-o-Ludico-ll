@@ -1,5 +1,6 @@
 extends Node2D
 
+@onready var camera = $Camera2D
 # Tamaño de la cuadrícula lógica del mapa (exportado para edición en el editor de Godot)
 @export var world_size: Vector2i = Vector2i(8, 8)
 # Número de habitaciones a generar (exportado para edición en el editor)
@@ -21,6 +22,7 @@ var grid_size_y: int
 var room_size: Vector2 = Vector2(384, 256)
 # Bandera para evitar múltiples inicializaciones
 var map_initialized: bool = false
+var player_scene = load("res://Escenas/player/player.tscn") # Cambia la ruta si es distinta
 
 # Método que se ejecuta cuando el nodo entra en la escena
 func _ready():
@@ -143,6 +145,61 @@ func generate_map():
 		}
 		room_instance.set("connectors", connectors)
 		rooms[x][y]["instance"] = room_instance
+	for pos in taken_position:
+		var x = pos.x + grid_size_x
+		var y = pos.y + grid_size_y
+		var room_data = rooms[x][y]
+		if room_data == null:
+			print("ERROR: room_data en (", x, ",", y, ") es null. Posición lógica: ", pos)
+			continue
+		var room_type = "cell" if room_data["type"] == 1 else "lab"
+		var scene_path = room_scene_paths[room_type]
+		var room_scene = load(scene_path)
+		if not room_scene:
+			print("ERROR: No se pudo cargar la escena: ", scene_path)
+			continue
+		var room_instance = room_scene.instantiate()
+		if not room_instance:
+			print("ERROR: No se pudo instanciar la escena: ", scene_path)
+			continue
+		var physical_pos = Vector2(pos.x * room_size.x, pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
+		room_instance.position = physical_pos
+		print("Instanciando habitación tipo ", room_type, " en posición física: ", physical_pos)
+		add_child(room_instance)
+		if room_instance.has_method("generate"):
+			room_instance.generate()
+		var connectors = {
+			"top": room_instance.get_node_or_null("ConnectorT"),
+			"down": room_instance.get_node_or_null("ConnectorD"),
+			"right": room_instance.get_node_or_null("ConnectorR"),
+			"left": room_instance.get_node_or_null("ConnectorL")
+			}
+		room_instance.set("connectors", connectors)
+		rooms[x][y]["instance"] = room_instance
+	# Verifica vecinos y abre conectores
+		var neighbor_directions = {
+			"top": Vector2i(0, -1),
+			"down": Vector2i(0, 1),
+			"right": Vector2i(1, 0),
+			"left": Vector2i(-1, 0)
+			}
+		for dir in neighbor_directions:
+			var neighbor_pos = pos + neighbor_directions[dir]if taken_position.has(neighbor_pos):
+			if room_instance.has_method("open_connector"):
+				room_instance.open_connector(dir)
+
+	var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
+	if player_scene:
+		var player_instance = player_scene.instantiate()
+		player_instance.position = origin_physical_pos + Vector2(64, 64) # Ajuste para colocarlo dentro de la habitación, no en la esquina
+		add_child(player_instance)
+		print("Jugador instanciado en posición: ", player_instance.position)
+	else:
+		print("ERROR: No se pudo cargar la escena del jugador.")
+	# Después de instanciar al jugador
+	camera.position = origin_physical_pos + room_size / 2
+	camera.make_current() 
+
 
 # Verifica si una posición lógica está dentro de los límites de la cuadrícula
 func is_position_valid(pos: Vector2i) -> bool:
@@ -183,5 +240,6 @@ func selective_new_position() -> Vector2i:
 	print("selective_new_position no encontró posición válida, devolviendo Vector2i.ZERO")
 	return Vector2i.ZERO
 
-
-#poner la cama en el jugador e intanciar al jugador en el 0,0/ probar 
+func move_camera_to_room(pos: Vector2i):
+	var target_pos = Vector2(pos.x * room_size.x, pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y) + room_size / 2
+	camera.position = target_pos
