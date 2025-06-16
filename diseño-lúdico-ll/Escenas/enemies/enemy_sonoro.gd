@@ -3,7 +3,7 @@ enum State {PATROLLING, CHASING, AGGRESSIVE} # tiene 3 estados definidos
 
 @export var patrol_speed: float = 40.0
 @export var chase_speed: float = 90.0
-@export var detection_radius: float = 300.0
+@export var detection_radius: float = 100.0
 @export var attack_range: float = 50.0
 @export var attack_cooldown: float = 1.0
 

@@ -13,7 +13,6 @@
 position = Vector2(178, 117)
 
 [node name="Enemy" parent="." instance=ExtResource("3_0kh0y")]
-visible = false
 position = Vector2(291, 84)
 
 [node name="EnemySonoro" parent="." instance=ExtResource("4_7xwpo")]
