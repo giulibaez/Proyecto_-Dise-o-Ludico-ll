@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var health = 3
+var health = 2
 var speed = 65
 var player_chase= false
 var player = null
@@ -11,22 +11,16 @@ var can_attack = true
 @onready var anim_enemy = $AnimatedSprite2D
 
 
-@onready var anim_enemy = $AnimatedSprite2D
-
-<<<<<<< Updated upstream
 func _physics_process(delta: float) -> void:
 	move()
 	deal_whit_damage()
-
+	
+func _ready() -> void:
+	anim_enemy.play("idle")
+	
 func move():
 	if anim_enemy.is_playing() and anim_enemy.animation in ["hurt", "death","attack"]:
 		return
-=======
-func _ready() -> void:
-	anim_enemy.play("idle")
-
-func _physics_process(delta): 
->>>>>>> Stashed changes
 	if player_chase:
 		position += (player.position - position)/speed 
 		anim_enemy.play("walk")
@@ -36,10 +30,6 @@ func _physics_process(delta):
 			anim_enemy.flip_h = true
 	else:
 		anim_enemy.play("idle")
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
 
 func take_damage(amount: int):
@@ -51,14 +41,12 @@ func take_damage(amount: int):
 	anim_enemy.play("hurt")
 	if player != null:
 		var knockback_dir = (position - player.position).normalized()
-		position += knockback_dir * 40
-		print("aplicando knocknaback")
+		position += knockback_dir * 30
 	if health == 0:
 		die()
 
 func die():
 	anim_enemy.play("death")
-	print("animacion de muerte")
 	await anim_enemy.animation_finished
 	queue_free()
 
