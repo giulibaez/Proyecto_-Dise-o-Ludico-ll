@@ -241,6 +241,14 @@ shape = SubResource("CircleShape2D_eqnh0")
 [node name="TakeDamageTimer" type="Timer" parent="."]
 wait_time = 0.5
 
+[node name="Respiracion" type="AudioStreamPlayer" parent="."]
+
+[node name="GemidoHurt" type="AudioStreamPlayer" parent="."]
+
+[node name="GemidoMuerte" type="AudioStreamPlayer" parent="."]
+
+[node name="Grito" type="AudioStreamPlayer" parent="."]
+
 [connection signal="body_entered" from="DetectionArea" to="." method="_on_detection_area_body_entered"]
 [connection signal="body_exited" from="DetectionArea" to="." method="_on_detection_area_body_exited"]
 [connection signal="body_entered" from="HitBoxArea" to="." method="_on_hit_box_area_body_entered"]

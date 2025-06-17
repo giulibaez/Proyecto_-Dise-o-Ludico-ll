@@ -118,10 +118,10 @@ func take_damage(cant: int):
 		print("Error")
 		return
 	if current_health == 2:
-		heart_sound_slow.stream = preload("res://music/sound_heart_player_fast.mp3")
+		heart_sound_slow.stream = preload("res://music/sound_heart_player_slow.mp3")
 		heart_sound_slow.play()
 	elif current_health == 1:
-		heart_sound_fast.stream = preload("res://music/sound_heart_player_slow.mp3")
+		heart_sound_fast.stream = preload("res://music/sound_heart_player_fast.mp3")
 		heart_sound_fast.play()
 		heart_sound_slow.stop()
 	if current_health == 0:
