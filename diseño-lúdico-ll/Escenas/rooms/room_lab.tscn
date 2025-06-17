@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1c0jnif02mno"]
+[gd_scene load_steps=4 format=3 uid="uid://b1c0jnif02mno"]
 
 [ext_resource type="Script" uid="uid://bk4fjhryo7mvs" path="res://Escenas/rooms/room_lab_generator.gd" id="1_4lwik"]
 [ext_resource type="TileSet" uid="uid://c7qdulrgxb2a3" path="res://Recursos/tileset_room_lab.tres" id="2_4lwik"]
+[ext_resource type="Texture2D" uid="uid://d1tbyyo4ra6js" path="res://Assets/rooms/degradado_negro_768x512.png" id="3_52dhw"]
 
 [node name="RoomLab" type="Node2D"]
 script = ExtResource("1_4lwik")
@@ -27,3 +28,9 @@ position = Vector2(32, 256)
 
 [node name="ConnectorL" type="Marker2D" parent="."]
 position = Vector2(736, 256)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.784314)
+self_modulate = Color(1, 1, 1, 0.784314)
+position = Vector2(384, 256)
+texture = ExtResource("3_52dhw")

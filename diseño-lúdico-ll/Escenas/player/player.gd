@@ -203,7 +203,7 @@ func _on_enemy_damage_delay_timer_timeout() -> void:
 	else:
 		print("no se aplica daño al jugador")
 
-func obtener_linerna():
+func obtener_linterna():
 	tiene_linterna = true
 	print("Linterna obtenida")
 

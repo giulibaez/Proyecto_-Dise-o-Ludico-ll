@@ -3,7 +3,7 @@ extends Node2D
 @export var world_size: Vector2i = Vector2i(8, 8)
 @export var number_of_rooms: int = 5
 @export var min_enemies: int = 2  
-@export var max_enemies: int = 4
+@export var max_enemies: int = 5
 @onready var camera = $Camera2D
 var room_scene_paths = {
 	"cell": "res://Escenas/rooms/roomCell.tscn",
@@ -12,7 +12,7 @@ var room_scene_paths = {
 	"ext": "res://Escenas/rooms/room_ext.tscn"
 }
 var enemy_scene_path = "res://Escenas/enemies/enemy.tscn"  # Nuevo: ruta de la escena del enemigo
-
+var enemy_positions: Array = []  # Para almacenar las posiciones de los enemigos
 var rooms = []
 var taken_position: Array = []
 var grid_size_x: int
@@ -168,7 +168,35 @@ func generate_map():
 
 	camera.position = origin_physical_pos + room_size / 2
 	camera.make_current()
+# Encontrar la habitación exterior (room_ext)
+	var room_ext_pos = null
+	for pos in taken_position:
+		var x = pos.x + grid_size_x
+		var y = pos.y + grid_size_y
+		var room_data = rooms[x][y]
+		if room_data and room_data["type"] == "ext":
+			room_ext_pos = pos
+			break
 
+	if room_ext_pos:
+	# Oscurecer solo las habitaciones adyacentes a room_ext, no room_ext misma
+		var directions = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(1, 0), Vector2i(-1, 0)]
+		for dir in directions:
+			var adjacent_pos = room_ext_pos + dir
+			if taken_position.has(adjacent_pos):
+				var adj_x = adjacent_pos.x + grid_size_x
+				var adj_y = adjacent_pos.y + grid_size_y
+				var adjacent_room_data = rooms[adj_x][adj_y]
+				if adjacent_room_data and adjacent_room_data["type"] != "ext":  # No oscurecer room_ext
+					var adjacent_room = rooms[adj_x][adj_y]["instance"]
+					if adjacent_room:
+						adjacent_room.modulate = Color(0.3, 0.3, 0.3)  # Oscurece al 10% de luz
+						print("Habitación adyacente a room_ext oscurecida en posición: ", adjacent_room.position)
+						if enemy_positions.has(adjacent_pos):
+							for child in get_children():
+								if child.is_in_group("enemies") and child.position.distance_to(adjacent_room.position) < room_size.x / 2:
+									enemy_scene_path.modulate = Color(0.9, 0.9, 0.9)  # Oscurece al enemigo al 10% de luz
+									print("Enemigo oscurecido en posición: ", child.position)
 	conectar_puertas()
 
 func move_camera_to_room(pos: Vector2i):
