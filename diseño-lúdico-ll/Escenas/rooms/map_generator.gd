@@ -143,6 +143,16 @@ func generate_map():
 		}
 		room_instance.set("connectors", connectors)
 		rooms[x][y]["instance"] = room_instance
+		var player_scene = load("res://Escenas/player/Player.tscn") # Cambia la ruta si es distinta
+		
+		if player_scene:
+			var player_instance = player_scene.instantiate()
+			var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
+			player_instance.position = origin_physical_pos + Vector2(64, 64) # Ajuste para colocarlo dentro de la habitación, no en la esquina
+			add_child(player_instance)
+			print("Jugador instanciado en posición: ", player_instance.position)
+		else:
+			print("ERROR: No se pudo cargar la escena del jugador.")
 
 # Verifica si una posición lógica está dentro de los límites de la cuadrícula
 func is_position_valid(pos: Vector2i) -> bool:
@@ -182,6 +192,3 @@ func selective_new_position() -> Vector2i:
 			return pos
 	print("selective_new_position no encontró posición válida, devolviendo Vector2i.ZERO")
 	return Vector2i.ZERO
-
-
-#poner la cama en el jugador e intanciar al jugador en el 0,0/ probar 

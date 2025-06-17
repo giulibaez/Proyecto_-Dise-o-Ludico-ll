@@ -6,9 +6,7 @@
 [node name="RoomLab" type="Node2D"]
 script = ExtResource("1_4lwik")
 
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource("2_52dhw")
-format = 2
+[node name="TileMap" type="Node2D" parent="."]
 
 [node name="Floors" type="TileMapLayer" parent="TileMap"]
 use_parent_material = true
@@ -18,10 +16,10 @@ tile_set = ExtResource("2_52dhw")
 use_parent_material = true
 tile_set = ExtResource("2_52dhw")
 
-[node name="DoorT" type="Marker2D" parent="."]
+[node name="ConnectorT" type="Marker2D" parent="."]
 
-[node name="DoorD" type="Marker2D" parent="."]
+[node name="ConnectorD" type="Marker2D" parent="."]
 
-[node name="DoorR" type="Marker2D" parent="."]
+[node name="ConnectorR" type="Marker2D" parent="."]
 
-[node name="DoorL" type="Marker2D" parent="."]
+[node name="ConnectorL" type="Marker2D" parent="."]

@@ -1,13 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfa4kwmrwnwbb"]
+[gd_scene load_steps=4 format=3 uid="uid://dfa4kwmrwnwbb"]
 
-[ext_resource type="PackedScene" uid="uid://daiipt5hwl6k0" path="res://Escenas/player/player.tscn" id="2_0kh0y"]
+[ext_resource type="PackedScene" uid="uid://btjtgy1hjyg3p" path="res://Escenas/rooms/map_generator.tscn" id="1_7xwpo"]
 [ext_resource type="PackedScene" uid="uid://ch7pcm517a17t" path="res://Escenas/enemies/enemy.tscn" id="3_0kh0y"]
-[ext_resource type="PackedScene" uid="uid://cvq7tta3qdyl8" path="res://Escenas/rooms/roomCell.tscn" id="3_7xwpo"]
 [ext_resource type="PackedScene" uid="uid://b25bx77unr2ic" path="res://Escenas/enemies/enemy_sonoro.tscn" id="4_7xwpo"]
 
 [node name="main" type="Node2D"]
 
-[node name="RoomCell" parent="." instance=ExtResource("3_7xwpo")]
+[node name="MapGenerator" parent="." instance=ExtResource("1_7xwpo")]
 
 [node name="Enemy" parent="." instance=ExtResource("3_0kh0y")]
 position = Vector2(291, 84)
@@ -15,6 +14,3 @@ position = Vector2(291, 84)
 [node name="EnemySonoro" parent="." instance=ExtResource("4_7xwpo")]
 visible = false
 position = Vector2(86, 73)
-
-[node name="Player" parent="." instance=ExtResource("2_0kh0y")]
-position = Vector2(178, 117)

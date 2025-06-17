@@ -6,9 +6,9 @@ extends Node2D
 @export var room_position: Vector2i = Vector2i.ZERO #una Mouskeherramienta Misteriosa que nos ayudara mas tarde 
 
 
-@export var floor_tiles: Array[Vector2i] = [Vector2i(3, 7), Vector2i(11, 6)] # Lista de tiles de piso 
-@export var floor_tile_percent: Array[float] = [0.9, 0.3] # 70% tile1, 30% tile2
-@export var size: Vector2i = Vector2i (24,16)
+@export var floor_tiles: Array[Vector2i] = [Vector2i(1, 1), Vector2i(4,1)] # Lista de tiles de piso 
+@export var floor_tile_percent: Array[float] = [0.9, 0.1] # 90% tile1, 10% tile2
+@export var size: Vector2i = Vector2i (12,8)
 
 func _ready() -> void:
 
@@ -21,11 +21,26 @@ func  generate_cell ():
 	for x in size.x: #recorre columnas del 0_9
 		for y in size.y: #recorre filas 0_9
 			var position = Vector2i (x,y) #guarda la coordenada (x,y) como vector de enteros (es un vector de 2 componentes lo uso para representar las cordenadas en la grilla
-			if x==0 or y==0 or x ==size.x -1 or y== size.y -1: #si esta en un borde
-				wall_map.set_cell( position, 0 , Vector2i(3,2)) #coloca una pared
+			if x == 0 and y == 0:
+				wall_map.set_cell(position, 1, Vector2i(0, 0)) # esquina superior izquierda
+			elif x == size.x - 1 and y == 0:
+				wall_map.set_cell(position, 1, Vector2i(2, 0)) # esquina superior derecha
+			elif x == 0 and y == size.y - 1:
+				wall_map.set_cell(position, 1, Vector2i(0, 2)) # esquina inferior izquierda
+			elif x == size.x - 1 and y == size.y - 1:
+				wall_map.set_cell(position, 1, Vector2i(2, 2)) # esquina inferior derecha
+			elif y == 0:
+				wall_map.set_cell(position, 1, Vector2i(1, 0)) # borde superior
+			elif y == size.y - 1:
+				wall_map.set_cell(position, 1, Vector2i(1, 2)) # borde inferior
+			elif x == 0:
+				wall_map.set_cell(position, 1, Vector2i(0, 1)) # borde izquierdo
+			elif x == size.x - 1:
+				wall_map.set_cell(position, 1, Vector2i(2, 1)) # borde derecho
+
 			else:
 				var tile_position = select_percent_tile(rand)
-				floor_map.set_cell( position, 0 , tile_position) #sino, coloca un piso aleatorio
+				floor_map.set_cell( position, 1 , tile_position) #sino, coloca un piso aleatorio
 				#coloca un tile del atlas 0 en la posicion (x,y) del tile map y usa el subtile que esta en la posicion (X,Y) dfentro del atlas
 
 func select_percent_tile(rand :RandomNumberGenerator) -> Vector2i:
