@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://hxc8gwn8d52x"]
+
+[ext_resource type="Script" uid="uid://d1uk4uyxolx6u" path="res://Escenas/items/item_linterna.gd" id="1_f724y"]
+[ext_resource type="Texture2D" uid="uid://isxi052yjxmg" path="res://Assets/rooms/linterna.png" id="1_kwc07"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f724y"]
+radius = 11.4018
+
+[node name="ItemLinterna" type="Area2D"]
+collision_layer = 17
+collision_mask = 5
+script = ExtResource("1_f724y")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.03775, 0.03775)
+texture = ExtResource("1_kwc07")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_f724y")

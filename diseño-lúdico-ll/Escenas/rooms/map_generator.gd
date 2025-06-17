@@ -1,7 +1,7 @@
 extends Node2D
 
 @export var world_size: Vector2i = Vector2i(8, 8)
-@export var number_of_rooms: int = 10
+@export var number_of_rooms: int = 5
 @onready var camera = $Camera2D
 var room_scene_paths = {
 	"cell": "res://Escenas/rooms/roomCell.tscn",
@@ -47,7 +47,7 @@ func generate_map():
 	taken_position.append(origin)
 	print("Habitación inicial colocada en posición lógica: ", origin, " (grilla: ", center_x, ",", center_y, ")")
 
-	var room_types = ["main", "lab", "ext"]
+	var room_types = ["main","main", "lab", "ext"]
 	var type_index = 0
 	for i in range(number_of_rooms - 1):
 		var random_compare_start = 0.2

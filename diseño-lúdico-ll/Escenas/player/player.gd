@@ -9,6 +9,9 @@ var enemy_inattack_range = false
 var enemy_attack_cooldown = true
 var player_alive = true
 var attack_inprogress = false 
+var tiene_linterna = false
+var tiene_llave = false
+
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var heart_sound_slow = $Node/HeartSoundSlow
@@ -199,3 +202,11 @@ func _on_enemy_damage_delay_timer_timeout() -> void:
 		print("daño aplicado al jugador")
 	else:
 		print("no se aplica daño al jugador")
+
+func obtener_linterna():
+	tiene_linterna = true
+	print("Linterna obtenida")
+
+func obtener_llave():
+	tiene_llave = true
+	print("Llave obtenida")

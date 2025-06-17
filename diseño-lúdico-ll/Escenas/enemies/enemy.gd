@@ -7,6 +7,7 @@ var player = null
 var player_inattack_zone= false
 var can_take_damage = true
 var can_attack = true
+@export var drop_item: String = ""  
 
 @onready var anim_enemy = $AnimatedSprite2D
 
@@ -46,11 +47,19 @@ func take_damage(amount: int):
 	if health == 0:
 		die()
 
+
 func die():
 	anim_enemy.play("death")
 	print("animacion de muerte")
 	await anim_enemy.animation_finished
+
+	if drop_item == "linterna":
+		player.obtener_linterna()
+	elif drop_item == "llave":
+		player.obtener_llave()
+
 	queue_free()
+
 
 func enemy():
 	pass
