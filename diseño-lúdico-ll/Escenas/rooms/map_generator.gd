@@ -1,10 +1,10 @@
 extends Node2D
-
 # Tamaño de la cuadrícula lógica del mapa (exportado para edición en el editor de Godot)
 @export var world_size: Vector2i = Vector2i(8, 8)
 # Número de habitaciones a generar (exportado para edición en el editor)
 @export var number_of_rooms: int = 10
 # Diccionario con las rutas a las escenas de las habitaciones
+@onready var camera = $Camera2D
 var room_scene_paths = {
 	"cell": "res://Escenas/rooms/roomCell.tscn",
 	"lab": "res://Escenas/rooms/room_lab.tscn"
@@ -18,7 +18,7 @@ var taken_position: Array = []
 var grid_size_x: int
 var grid_size_y: int
 # Tamaño físico de cada habitación en píxeles
-var room_size: Vector2 = Vector2(384, 256)
+var room_size: Vector2 = Vector2(768, 512)
 # Bandera para evitar múltiples inicializaciones
 var map_initialized: bool = false
 
@@ -144,15 +144,21 @@ func generate_map():
 		room_instance.set("connectors", connectors)
 		rooms[x][y]["instance"] = room_instance
 		var player_scene = load("res://Escenas/player/Player.tscn") # Cambia la ruta si es distinta
-		
+		var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
 		if player_scene:
 			var player_instance = player_scene.instantiate()
-			var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
 			player_instance.position = origin_physical_pos + Vector2(64, 64) # Ajuste para colocarlo dentro de la habitación, no en la esquina
 			add_child(player_instance)
 			print("Jugador instanciado en posición: ", player_instance.position)
 		else:
 			print("ERROR: No se pudo cargar la escena del jugador.")
+		camera.position = origin_physical_pos + room_size / 2
+		camera.make_current()
+
+func move_camera_to_room(pos: Vector2i):
+	var target_pos = Vector2(pos.x * room_size.x, pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y) + room_size / 2
+	camera.position = target_pos
+
 
 # Verifica si una posición lógica está dentro de los límites de la cuadrícula
 func is_position_valid(pos: Vector2i) -> bool:

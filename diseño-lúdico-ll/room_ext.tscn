@@ -15,9 +15,14 @@ tile_set = ExtResource("2_7nvms")
 tile_set = ExtResource("2_7nvms")
 
 [node name="ConnectorT" type="Marker2D" parent="."]
+position = Vector2(384, 32)
+gizmo_extents = 0.0
 
 [node name="ConnectorD" type="Marker2D" parent="."]
+position = Vector2(384, 480)
 
 [node name="ConnectorR" type="Marker2D" parent="."]
+position = Vector2(736, 256)
 
 [node name="ConnectorL" type="Marker2D" parent="."]
+position = Vector2(32, 256)

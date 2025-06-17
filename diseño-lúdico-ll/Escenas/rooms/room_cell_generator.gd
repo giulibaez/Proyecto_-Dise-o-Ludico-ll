@@ -5,13 +5,16 @@ extends Node2D
 @onready var wall_map : TileMapLayer = $TileMap/Walls #referencia a nodo hijo walls
 @export var room_position: Vector2i = Vector2i.ZERO #una Mouskeherramienta Misteriosa que nos ayudara mas tarde 
 
-
+@onready var door_markers : Node2D = $Markers
+@export var door_tile: Vector2i = Vector2i(5, 2) # Tu tile de puerta en el atlas
 @export var floor_tiles: Array[Vector2i] = [Vector2i(1, 1), Vector2i(4,1)] # Lista de tiles de piso 
 @export var floor_tile_percent: Array[float] = [0.9, 0.1] # 90% tile1, 10% tile2
 @export var size: Vector2i = Vector2i (12,8)
 
-func _ready() -> void:
+var door_tile_x = Vector2i(4,0)
+var door_tile_y = Vector2i (3,1)
 
+func _ready() -> void:
 	generate_cell() 
 
 
@@ -60,3 +63,12 @@ func select_percent_tile(rand :RandomNumberGenerator) -> Vector2i:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
+
+func abrir_conector_direccion(direccion: String):
+	var marker_name = "DoorMarker" + direccion.capitalize()
+	if door_markers.has_node(marker_name):
+		var marker = door_markers.get_node(marker_name)
+		var cell = wall_map.local_to_map(marker.global_position)
+		wall_map.set_cell(cell, 0, door_tile)
+	else:
+		print("No se encontró el marker: ", marker_name)

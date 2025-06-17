@@ -16,6 +16,7 @@ var attack_inprogress = false
 @onready var heart_display = $Node/Vida
 @onready var hitbox_area = $HitBoxArea
 @onready var timer = $AttackCooldown
+var current_room: Vector2i = Vector2i.ZERO
 
 func _ready() -> void:
 	animated_sprite.play("front_idle")
@@ -29,6 +30,21 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		enemy_attack()
 		attack()
+
+func _process(delta):
+	var gen = get_parent()
+	var rs = gen.room_size
+	var gsx = gen.grid_size_x
+	var gsy = gen.grid_size_y
+
+	var room_x = floor(position.x / rs.x) - gsx
+	var room_y = floor(position.y / rs.y) - gsy
+	var player_room = Vector2i(room_x, room_y)
+
+	if player_room != current_room:
+		current_room = player_room
+		gen.move_camera_to_room(current_room)
+
 
 func move():
 	if Input.is_action_pressed("move_right"):
