@@ -2,6 +2,8 @@ extends Node2D
 
 @export var world_size: Vector2i = Vector2i(8, 8)
 @export var number_of_rooms: int = 5
+@export var min_enemies: int = 2  
+@export var max_enemies: int = 4
 @onready var camera = $Camera2D
 var room_scene_paths = {
 	"cell": "res://Escenas/rooms/roomCell.tscn",
@@ -9,6 +11,7 @@ var room_scene_paths = {
 	"lab": "res://Escenas/rooms/room_lab.tscn",
 	"ext": "res://Escenas/rooms/room_ext.tscn"
 }
+var enemy_scene_path = "res://Escenas/enemies/enemy.tscn"  # Nuevo: ruta de la escena del enemigo
 
 var rooms = []
 var taken_position: Array = []
@@ -16,6 +19,8 @@ var grid_size_x: int
 var grid_size_y: int
 var room_size: Vector2 = Vector2(768, 512)
 var map_initialized: bool = false
+# Resto de las funciones (move_camera_to_room, is_position_valid, new_position, etc.) permanecen sin cambios
+
 
 func _ready():
 	if map_initialized:
@@ -27,9 +32,10 @@ func _ready():
 	grid_size_x = world_size.x
 	grid_size_y = world_size.y
 	generate_map()
-	map_initialized = true
+	map_initialized = true 
 
 func generate_map():
+	global.reset()
 	rooms.clear()
 	taken_position.clear()
 	
@@ -47,7 +53,7 @@ func generate_map():
 	taken_position.append(origin)
 	print("Habitación inicial colocada en posición lógica: ", origin, " (grilla: ", center_x, ",", center_y, ")")
 
-	var room_types = ["main","main", "lab", "ext"]
+	var room_types = ["main", "main", "lab", "ext"]
 	var type_index = 0
 	for i in range(number_of_rooms - 1):
 		var random_compare_start = 0.2
@@ -81,6 +87,12 @@ func generate_map():
 		else:
 			print("No se asignó habitación en posición: ", check_pos)
 
+	# Nuevo: decidir cuántos enemigos instanciar
+	var total_enemies = randi_range(min_enemies, max_enemies)
+	global.enemigos_totales = total_enemies  # Actualizar el conteo global
+	var enemies_placed = 0
+
+	# Instanciar habitaciones
 	for pos in taken_position:
 		var x = pos.x + grid_size_x
 		var y = pos.y + grid_size_y
@@ -111,6 +123,38 @@ func generate_map():
 			room_instance.generate()
 
 		rooms[x][y]["instance"] = room_instance
+
+		# Nuevo: instanciar enemigos en las habitaciones (excepto en la inicial)
+		if pos != origin and enemies_placed < total_enemies:
+			var enemy_scene = load(enemy_scene_path)
+			if enemy_scene:
+				var enemy_instance = enemy_scene.instantiate()
+				# Posición aleatoria dentro de la habitación (ajusta según el tamaño)
+				var enemy_offset = Vector2(randi_range(50, room_size.x - 50), randi_range(50, room_size.y - 50))
+				enemy_instance.position = physical_pos + enemy_offset
+				add_child(enemy_instance)
+				enemies_placed += 1
+				print("Enemigo instanciado en habitación tipo ", room_type, " en posición: ", enemy_instance.position)
+			else:
+				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
+
+	# Asegurar que se instancien todos los enemigos planeados
+	while enemies_placed < total_enemies:
+		var random_room_pos = taken_position[randi() % taken_position.size()]
+		if random_room_pos != origin:  # Evitar la habitación inicial
+			var enemy_scene = load(enemy_scene_path)
+			if enemy_scene:
+				var enemy_instance = enemy_scene.instantiate()
+				var x = random_room_pos.x + grid_size_x
+				var y = random_room_pos.y + grid_size_y
+				var physical_pos = Vector2(random_room_pos.x * room_size.x, random_room_pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
+				var enemy_offset = Vector2(randi_range(50, room_size.x - 50), randi_range(50, room_size.y - 50))
+				enemy_instance.position = physical_pos + enemy_offset
+				add_child(enemy_instance)
+				enemies_placed += 1
+				print("Enemigo adicional instanciado en habitación en posición: ", enemy_instance.position)
+			else:
+				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
 
 	var player_scene = load("res://Escenas/player/Player.tscn")
 	var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)

@@ -49,15 +49,22 @@ func take_damage(amount: int):
 
 
 func die():
+	global.enemigos_muertos += 1
+
+	var item_scene: PackedScene = null
+
+	if global.enemigos_muertos == 1:
+		item_scene = load("res://Escenas/items/item_linterna.tscn")
+	elif global.enemigos_muertos == global.enemigos_totales:
+		item_scene = load("res://Escenas/items/item_llave.tscn")
+
+	if item_scene:
+		var item = item_scene.instantiate()
+		item.position = position
+		get_parent().add_child(item)
+
 	anim_enemy.play("death")
-	print("animacion de muerte")
 	await anim_enemy.animation_finished
-
-	if drop_item == "linterna":
-		player.obtener_linterna()
-	elif drop_item == "llave":
-		player.obtener_llave()
-
 	queue_free()
 
 

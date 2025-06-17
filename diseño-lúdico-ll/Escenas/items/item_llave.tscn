@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bkivjac4fpmmi" path="res://Assets/llave.png" id="1_xl3k2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3dala"]
-size = Vector2(34, 22)
+size = Vector2(24, 16)
 
 [node name="ItemLlave" type="Area2D"]
 texture_filter = 1
@@ -12,8 +12,7 @@ collision_mask = 13
 script = ExtResource("1_3dala")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -4.76837e-07)
-scale = Vector2(0.0749441, 0.0749441)
+scale = Vector2(0.0441834, 0.0441834)
 texture = ExtResource("1_xl3k2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

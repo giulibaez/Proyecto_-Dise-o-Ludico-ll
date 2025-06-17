@@ -118,10 +118,10 @@ func take_damage(cant: int):
 		print("Error")
 		return
 	if current_health == 2:
-		heart_sound_slow.stream = preload("res://music/sound_heart_player_slow.mp3")
+		heart_sound_slow.stream = preload("res://music/sound_heart_player_fast.mp3")
 		heart_sound_slow.play()
 	elif current_health == 1:
-		heart_sound_fast.stream = preload("res://music/sound_heart_player_fast.mp3")
+		heart_sound_fast.stream = preload("res://music/sound_heart_player_slow.mp3")
 		heart_sound_fast.play()
 		heart_sound_slow.stop()
 	if current_health == 0:
@@ -203,7 +203,7 @@ func _on_enemy_damage_delay_timer_timeout() -> void:
 	else:
 		print("no se aplica daño al jugador")
 
-func obtener_linterna():
+func obtener_linerna():
 	tiene_linterna = true
 	print("Linterna obtenida")
 
