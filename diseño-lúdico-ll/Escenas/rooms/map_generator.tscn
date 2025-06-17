@@ -1,9 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://btjtgy1hjyg3p"]
+[gd_scene load_steps=3 format=3 uid="uid://btjtgy1hjyg3p"]
 
 [ext_resource type="Script" uid="uid://b1jiwu7qodgep" path="res://Escenas/rooms/map_generator.gd" id="1_6qiat"]
+
+[sub_resource type="Environment" id="Environment_6qiat"]
 
 [node name="MapGenerator" type="Node2D"]
 script = ExtResource("1_6qiat")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.2, 0.2)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6qiat")

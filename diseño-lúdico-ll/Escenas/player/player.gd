@@ -11,7 +11,7 @@ var player_alive = true
 var attack_inprogress = false 
 var tiene_linterna = false
 var tiene_llave = false
-
+var linterna_encendida = false  # Para rastrear si la linterna está encendida
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var heart_sound_slow = $Node/HeartSoundSlow
@@ -19,13 +19,16 @@ var tiene_llave = false
 @onready var heart_display = $Node/Vida
 @onready var hitbox_area = $HitBoxArea
 @onready var timer = $AttackCooldown
+@onready var linterna_light = $LinternaLight  # Referencia al nodo PointLight2D
 var current_room: Vector2i = Vector2i.ZERO
 
 func _ready() -> void:
 	animated_sprite.play("front_idle")
-	timer.one_shot = true  # El timer se ejecuta una vez por ataque
+	timer.one_shot = true
 	if not timer.is_connected("timeout", _on_attack_cooldown_timeout):
-		timer.connect("timeout", _on_attack_cooldown_timeout)  # Conecta la señal en código
+		timer.connect("timeout", _on_attack_cooldown_timeout)
+	linterna_light.enabled = false  # Asegura que la linterna esté apagada al inicio
+	add_to_group("player")  # Para que Linterna.gd lo detecte
 
 func _physics_process(delta: float) -> void:
 	if player_alive:
@@ -33,6 +36,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		enemy_attack()
 		attack()
+		usar_linterna()
 
 func _process(delta):
 	var gen = get_parent()
@@ -47,7 +51,6 @@ func _process(delta):
 	if player_room != current_room:
 		current_room = player_room
 		gen.move_camera_to_room(current_room)
-
 
 func move():
 	if Input.is_action_pressed("move_right"):
@@ -114,7 +117,7 @@ func take_damage(cant: int):
 	current_health = clamp(current_health, 0, max_health)
 	update_hearts_display()
 	
-	if heart_sound_fast == null and heart_sound_slow == null :
+	if heart_sound_fast == null and heart_sound_slow == null:
 		print("Error")
 		return
 	if current_health == 2:
@@ -127,9 +130,8 @@ func take_damage(cant: int):
 	if current_health == 0:
 		die()
 
-
 func die():
-	player_alive= false
+	player_alive = false
 	if player_alive == false:
 		animated_sprite.play("death")
 		await animated_sprite.animation_finished
@@ -193,7 +195,6 @@ func _on_deal_attack_timer_timeout() -> void:
 func player():
 	pass
 
-
 func _on_enemy_damage_delay_timer_timeout() -> void:
 	if enemy_inattack_range and enemy_attack_cooldown and player_alive:
 		take_damage(1)
@@ -210,3 +211,9 @@ func obtener_linterna():
 func obtener_llave():
 	tiene_llave = true
 	print("Llave obtenida")
+
+func usar_linterna():
+	if Input.is_action_just_pressed("use_linterna") and tiene_linterna:
+		linterna_encendida = !linterna_encendida  # Alterna entre encendido y apagado
+		linterna_light.enabled = linterna_encendida
+		print("Linterna ", "encendida" if linterna_encendida else "apagada")

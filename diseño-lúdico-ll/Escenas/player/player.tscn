@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://daiipt5hwl6k0"]
+[gd_scene load_steps=58 format=3 uid="uid://daiipt5hwl6k0"]
 
 [ext_resource type="Script" uid="uid://bxpphg2i11xlo" path="res://Escenas/player/player.gd" id="1_e6cd0"]
 [ext_resource type="Texture2D" uid="uid://xu0gorlgtrtf" path="res://Assets/character/player/Character0_SwordAttack_Sword.png" id="2_xlwfv"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bdo03kxfglvb5" path="res://Assets/character/player/Character0_Die.png" id="5_b21vg"]
 [ext_resource type="AudioStream" uid="uid://cdxx8finvhmev" path="res://music/sound_heart_player_slow.mp3" id="6_pgevo"]
 [ext_resource type="AudioStream" uid="uid://ero2pdox6fkq" path="res://music/sound_heart_player_fast.mp3" id="7_8w2jf"]
+[ext_resource type="Texture2D" uid="uid://bjkyp3ngg882h" path="res://Assets/character/player/degradado_amarillo_768x512.png" id="8_pgevo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ohiiw"]
 atlas = ExtResource("2_xlwfv")
@@ -440,6 +441,12 @@ wait_time = 3.0
 [node name="EnemyDamageDelayTimer" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="LinternaLight" type="PointLight2D" parent="."]
+enabled = false
+color = Color(1, 1, 0.6, 1)
+energy = 1.18
+texture = ExtResource("8_pgevo")
 
 [connection signal="body_entered" from="HitBoxArea" to="." method="_on_hit_box_area_body_entered"]
 [connection signal="body_exited" from="HitBoxArea" to="." method="_on_hit_box_area_body_exited"]

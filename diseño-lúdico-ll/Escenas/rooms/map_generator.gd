@@ -194,8 +194,8 @@ func generate_map():
 						print("Habitación adyacente a room_ext oscurecida en posición: ", adjacent_room.position)
 						if enemy_positions.has(adjacent_pos):
 							for child in get_children():
-								if child.is_in_group("enemies") and child.position.distance_to(adjacent_room.position) < room_size.x / 2:
-									enemy_scene_path.modulate = Color(0.9, 0.9, 0.9)  # Oscurece al enemigo al 10% de luz
+								if child.name.begins_with("enemy") and child.position.distance_to(adjacent_room.position) < room_size.x / 2:
+									child.modulate = Color(0.9, 0.9, 0.9)  # Oscurece al enemigo al 10% de luz
 									print("Enemigo oscurecido en posición: ", child.position)
 	conectar_puertas()
 
