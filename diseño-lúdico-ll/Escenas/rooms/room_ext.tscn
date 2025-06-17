@@ -1,18 +1,18 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3mipxubap3cl"]
 
-[ext_resource type="Script" uid="uid://dwsxpt2n5yjhp" path="res://room_ext_generator.gd" id="1_piu4n"]
-[ext_resource type="TileSet" uid="uid://4k86asebv17t" path="res://Recursos/tileset_room_ext.tres" id="2_7nvms"]
+[ext_resource type="Script" uid="uid://dwsxpt2n5yjhp" path="res://Escenas/rooms/room_ext_generator.gd" id="1_2ru6y"]
+[ext_resource type="TileSet" uid="uid://4k86asebv17t" path="res://Recursos/tileset_room_ext.tres" id="2_1q40y"]
 
 [node name="RoomExt" type="Node2D"]
-script = ExtResource("1_piu4n")
+script = ExtResource("1_2ru6y")
 
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="Floors" type="TileMapLayer" parent="Node2D"]
-tile_set = ExtResource("2_7nvms")
+tile_set = ExtResource("2_1q40y")
 
 [node name="Walls" type="TileMapLayer" parent="Node2D"]
-tile_set = ExtResource("2_7nvms")
+tile_set = ExtResource("2_1q40y")
 
 [node name="ConnectorT" type="Marker2D" parent="."]
 position = Vector2(384, 32)

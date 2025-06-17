@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var room_type: String = "main"
+@export var room_type: String = "ext"
 @onready var floor_map: TileMapLayer = $Node2D/Floors
 @onready var wall_map: TileMapLayer = $Node2D/Walls
 @export var room_position: Vector2i = Vector2i.ZERO

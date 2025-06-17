@@ -5,7 +5,9 @@ extends Node2D
 @onready var camera = $Camera2D
 var room_scene_paths = {
 	"cell": "res://Escenas/rooms/roomCell.tscn",
-	"lab": "res://Escenas/rooms/room_lab.tscn"
+	"main": "res://Escenas/rooms/room_main.tscn",
+	"lab": "res://Escenas/rooms/room_lab.tscn",
+	"ext": "res://Escenas/rooms/room_ext.tscn"
 }
 
 var rooms = []
@@ -41,13 +43,15 @@ func generate_map():
 	var origin = Vector2i.ZERO
 	var center_x = grid_size_x
 	var center_y = grid_size_y
-	rooms[center_x][center_y] = {"grid_pos": origin, "type": 1}
+	rooms[center_x][center_y] = {"grid_pos": origin, "type": "cell"}
 	taken_position.append(origin)
 	print("Habitación inicial colocada en posición lógica: ", origin, " (grilla: ", center_x, ",", center_y, ")")
 
-	var random_compare_start = 0.2
-	var random_compare_end = 0.01
+	var room_types = ["main", "lab", "ext"]
+	var type_index = 0
 	for i in range(number_of_rooms - 1):
+		var random_compare_start = 0.2
+		var random_compare_end = 0.01
 		var random_compare = lerp(random_compare_start, random_compare_end, float(i) / (number_of_rooms - 1))
 		var check_pos = new_position()
 
@@ -69,9 +73,11 @@ func generate_map():
 		if is_position_valid(check_pos) and not taken_position.has(check_pos):
 			var grid_x = check_pos.x + grid_size_x
 			var grid_y = check_pos.y + grid_size_y
-			rooms[grid_x][grid_y] = {"grid_pos": check_pos, "type": 0}
+			var room_type = room_types[type_index % room_types.size()]
+			type_index += 1
+			rooms[grid_x][grid_y] = {"grid_pos": check_pos, "type": room_type}
 			taken_position.append(check_pos)
-			print("Habitación colocada en posición lógica: ", check_pos, " (grilla: ", grid_x, ",", grid_y, ")")
+			print("Habitación colocada en posición lógica: ", check_pos, " (grilla: ", grid_x, ",", grid_y, "), tipo: ", room_type)
 		else:
 			print("No se asignó habitación en posición: ", check_pos)
 
@@ -83,7 +89,7 @@ func generate_map():
 			print("ERROR: room_data en (", x, ",", y, ") es null. Posición lógica: ", pos)
 			continue
 
-		var room_type = "cell" if room_data["type"] == 1 else "lab"
+		var room_type = room_data["type"]
 		var scene_path = room_scene_paths[room_type]
 		var room_scene = load(scene_path)
 		if not room_scene:
@@ -189,7 +195,6 @@ func conectar_puertas():
 				var ny = neighbor_pos.y + grid_size_y
 				var neighbor_data = rooms[nx][ny]
 				if neighbor_data and "instance" in neighbor_data:
-					# Pasa la dirección y deja que la habitación elija el tile
 					instance.abrir_puerta(dir_name, Vector2i.ZERO, 0)
 					var neighbor_instance = neighbor_data["instance"]
 					neighbor_instance.abrir_puerta(opposite_directions[dir_name], Vector2i.ZERO, 0)
