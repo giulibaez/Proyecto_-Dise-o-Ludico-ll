@@ -21,25 +21,25 @@ func  generate_ext():
 		for y in size.y: #recorre filas 0_9
 			var position = Vector2i (x,y) #guarda la coordenada (x,y) como vector de enteros (es un vector de 2 componentes lo uso para representar las cordenadas en la grilla
 			if x == 0 and y == 0:
-				wall_map.set_cell(position, 2, Vector2i(0, 0)) # esquina superior izquierda
+				wall_map.set_cell(position, 0, Vector2i(0, 0)) # esquina superior izquierda
 			elif x == size.x - 1 and y == 0:
-				wall_map.set_cell(position, 2, Vector2i(2, 0)) # esquina superior derecha
+				wall_map.set_cell(position, 0, Vector2i(2, 0)) # esquina superior derecha
 			elif x == 0 and y == size.y - 1:
-				wall_map.set_cell(position, 2, Vector2i(0, 2)) # esquina inferior izquierda
+				wall_map.set_cell(position, 0, Vector2i(0, 2)) # esquina inferior izquierda
 			elif x == size.x - 1 and y == size.y - 1:
-				wall_map.set_cell(position, 2, Vector2i(2, 2)) # esquina inferior derecha
+				wall_map.set_cell(position, 0, Vector2i(2, 2)) # esquina inferior derecha
 			elif y == 0:
-				wall_map.set_cell(position, 2, Vector2i(1, 0)) # borde superior
+				wall_map.set_cell(position, 0, Vector2i(1, 0)) # borde superior
 			elif y == size.y - 1:
-				wall_map.set_cell(position, 2, Vector2i(1, 2)) # borde inferior
+				wall_map.set_cell(position, 0, Vector2i(1, 2)) # borde inferior
 			elif x == 0:
-				wall_map.set_cell(position, 2, Vector2i(0, 1)) # borde izquierdo
+				wall_map.set_cell(position, 0, Vector2i(0, 1)) # borde izquierdo
 			elif x == size.x - 1:
-				wall_map.set_cell(position, 2, Vector2i(2, 1)) # borde derecho
+				wall_map.set_cell(position, 0, Vector2i(2, 1)) # borde derecho
 
 			else:
 				var tile_position = select_percent_tile(rand)
-				floor_map.set_cell( position, 2 , tile_position) #sino, coloca un piso aleatorio
+				floor_map.set_cell( position, 0 , tile_position) #sino, coloca un piso aleatorio
 				#coloca un tile del atlas 0 en la posicion (x,y) del tile map y usa el subtile que esta en la posicion (X,Y) dfentro del atlas
 
 func select_percent_tile(rand :RandomNumberGenerator) -> Vector2i:

@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var room_type: String = "cell"
+@export var room_type: String = "lab"
 @onready var floor_map: TileMapLayer = $TileMap/Floors
 @onready var wall_map: TileMapLayer = $TileMap/Walls
 @export var room_position: Vector2i = Vector2i.ZERO
@@ -24,24 +24,24 @@ func generate():
 		for y in size.y:
 			var position = Vector2i(x, y)
 			if x == 0 and y == 0:
-				wall_map.set_cell(position, 1, Vector2i(0, 0)) # Esquina superior izquierda
+				wall_map.set_cell(position, 0, Vector2i(0, 0)) # Esquina superior izquierda
 			elif x == size.x - 1 and y == 0:
-				wall_map.set_cell(position, 1, Vector2i(2, 0)) # Esquina superior derecha
+				wall_map.set_cell(position, 0, Vector2i(2, 0)) # Esquina superior derecha
 			elif x == 0 and y == size.y - 1:
-				wall_map.set_cell(position, 1, Vector2i(0, 2)) # Esquina inferior izquierda
+				wall_map.set_cell(position, 0, Vector2i(0, 2)) # Esquina inferior izquierda
 			elif x == size.x - 1 and y == size.y - 1:
-				wall_map.set_cell(position, 1, Vector2i(2, 2)) # Esquina inferior derecha
+				wall_map.set_cell(position, 0, Vector2i(2, 2)) # Esquina inferior derecha
 			elif y == 0:
-				wall_map.set_cell(position, 1, Vector2i(1, 0)) # Borde superior
+				wall_map.set_cell(position, 0, Vector2i(1, 0)) # Borde superior
 			elif y == size.y - 1:
-				wall_map.set_cell(position, 1, Vector2i(1, 2)) # Borde inferior
+				wall_map.set_cell(position, 0, Vector2i(1, 2)) # Borde inferior
 			elif x == 0:
-				wall_map.set_cell(position, 1, Vector2i(0, 1)) # Borde izquierdo
+				wall_map.set_cell(position, 0, Vector2i(0, 1)) # Borde izquierdo
 			elif x == size.x - 1:
-				wall_map.set_cell(position, 1, Vector2i(2, 1)) # Borde derecho
+				wall_map.set_cell(position, 0, Vector2i(2, 1)) # Borde derecho
 			else:
 				var tile_position = select_percent_tile(rand)
-				floor_map.set_cell(position, 1, tile_position)
+				floor_map.set_cell(position, 0, tile_position)
 
 func select_percent_tile(rand: RandomNumberGenerator) -> Vector2i:
 	var total_percent = 0.0

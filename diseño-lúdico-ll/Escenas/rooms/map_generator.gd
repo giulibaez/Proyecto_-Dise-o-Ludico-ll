@@ -190,6 +190,6 @@ func conectar_puertas():
 				var neighbor_data = rooms[nx][ny]
 				if neighbor_data and "instance" in neighbor_data:
 					# Pasa la dirección y deja que la habitación elija el tile
-					instance.abrir_puerta(dir_name, Vector2i.ZERO, 1)
+					instance.abrir_puerta(dir_name, Vector2i.ZERO, 0)
 					var neighbor_instance = neighbor_data["instance"]
-					neighbor_instance.abrir_puerta(opposite_directions[dir_name], Vector2i.ZERO, 1)
+					neighbor_instance.abrir_puerta(opposite_directions[dir_name], Vector2i.ZERO, 0)
