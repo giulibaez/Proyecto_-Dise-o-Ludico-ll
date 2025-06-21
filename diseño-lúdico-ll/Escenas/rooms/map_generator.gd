@@ -156,7 +156,7 @@ func generate_map():
 			else:
 				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
 
-	var player_scene = load("res://Escenas/player/Player.tscn")
+	var player_scene = load("res://Escenas/player/player.tscn")
 	var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
 	if player_scene:
 		var player_instance = player_scene.instantiate()
