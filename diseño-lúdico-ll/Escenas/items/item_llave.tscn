@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dwkrq5qqcfqmw"]
 
 [ext_resource type="Script" uid="uid://dp2cwaqa3ldvs" path="res://Escenas/items/item_llave.gd" id="1_3dala"]
-[ext_resource type="Texture2D" uid="uid://bkivjac4fpmmi" path="res://Assets/llave.png" id="1_xl3k2"]
+[ext_resource type="Texture2D" uid="uid://bkivjac4fpmmi" path="res://Assets/object/llave.png" id="1_xl3k2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3dala"]
 size = Vector2(24, 16)

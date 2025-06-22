@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkivjac4fpmmi"
-path="res://.godot/imported/llave.png-13502387ffd611ebf88ff2e8c5e16bda.ctex"
+uid="uid://yaqp8q0xebtq"
+path="res://.godot/imported/fondo_menu.png-adf1415c0da1835a032db9b28225e7e7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/llave.png"
-dest_files=["res://.godot/imported/llave.png-13502387ffd611ebf88ff2e8c5e16bda.ctex"]
+source_file="res://Assets/fondo_menu.png"
+dest_files=["res://.godot/imported/fondo_menu.png-adf1415c0da1835a032db9b28225e7e7.ctex"]
 
 [params]
 

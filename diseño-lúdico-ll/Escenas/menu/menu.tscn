@@ -1,0 +1,89 @@
+[gd_scene load_steps=5 format=3 uid="uid://ec6eemwy5q2t"]
+
+[ext_resource type="Script" uid="uid://cu4gowyb3u82a" path="res://Escenas/menu/menu.gd" id="1_6yuiv"]
+[ext_resource type="Texture2D" uid="uid://yaqp8q0xebtq" path="res://Assets/fondo_menu.png" id="1_g4iwb"]
+[ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="1_t3tbb"]
+[ext_resource type="Texture2D" uid="uid://c1bwyf1qs5ahb" path="res://Assets/dunkelheit_logo.png" id="3_ckcxl"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6yuiv")
+
+[node name="Fondo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_g4iwb")
+expand_mode = 1
+
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -2.0
+offset_top = -143.0
+offset_right = -2.0
+offset_bottom = 369.0
+grow_horizontal = 2
+texture = ExtResource("3_ckcxl")
+expand_mode = 5
+stretch_mode = 5
+
+[node name="VBoxBotones" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -352.0
+offset_top = -276.0
+offset_right = -151.0
+offset_bottom = -32.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="Jugar" type="Button" parent="VBoxBotones"]
+layout_mode = 2
+theme = ExtResource("1_t3tbb")
+action_mode = 0
+text = "Jugar
+"
+flat = true
+
+[node name="ComoJugar" type="Button" parent="VBoxBotones"]
+layout_mode = 2
+theme = ExtResource("1_t3tbb")
+action_mode = 0
+text = "¿Cómo jugar?
+"
+flat = true
+
+[node name="Creditos" type="Button" parent="VBoxBotones"]
+layout_mode = 2
+theme = ExtResource("1_t3tbb")
+action_mode = 0
+text = "Créditos"
+flat = true
+
+[node name="Salir" type="Button" parent="VBoxBotones"]
+layout_mode = 2
+theme = ExtResource("1_t3tbb")
+action_mode = 0
+text = "Salir
+
+"
+flat = true
+
+[connection signal="pressed" from="VBoxBotones/Jugar" to="." method="_on_jugar_pressed"]
+[connection signal="pressed" from="VBoxBotones/ComoJugar" to="." method="_on_como_jugar_pressed"]
+[connection signal="pressed" from="VBoxBotones/Creditos" to="." method="_on_creditos_pressed"]
+[connection signal="pressed" from="VBoxBotones/Salir" to="." method="_on_salir_pressed"]

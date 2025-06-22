@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Diseño Lúdico ll"
-run/main_scene="uid://dfa4kwmrwnwbb"
+run/main_scene="uid://ec6eemwy5q2t"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
