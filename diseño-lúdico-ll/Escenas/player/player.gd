@@ -148,6 +148,7 @@ func die():
 		animated_sprite.play("death")
 		await animated_sprite.animation_finished
 	queue_free()
+	get_tree().change_scene_to_file("res://Escenas/menu/game_over.tscn")
 
 func update_hearts_display():
 	match current_health:

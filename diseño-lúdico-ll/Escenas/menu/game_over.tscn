@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://8c5a1842x6am"]
+
+[ext_resource type="Script" uid="uid://hm1tb4er56qq" path="res://Escenas/menu/game_over.gd" id="1_bajwj"]
+[ext_resource type="Texture2D" uid="uid://bqp3bj6xsvs4l" path="res://Assets/gameover_screen.png" id="1_slqd8"]
+[ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="2_bajwj"]
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_bajwj")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_slqd8")
+expand_mode = 1
+
+[node name="VolverAJugar" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_top = 464.0
+offset_right = 160.0
+offset_bottom = 512.0
+theme = ExtResource("2_bajwj")
+text = "volver a jugar "
+
+[node name="Menu" type="Button" parent="TextureRect"]
+layout_mode = 0
+offset_left = 544.0
+offset_top = 464.0
+offset_right = 768.0
+offset_bottom = 512.0
+theme = ExtResource("2_bajwj")
+text = "menu de inico "
+
+[connection signal="pressed" from="TextureRect/VolverAJugar" to="." method="_on_volver_a_jugar_pressed"]
+[connection signal="pressed" from="TextureRect/Menu" to="." method="_on_menu_pressed"]
