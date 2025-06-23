@@ -63,7 +63,7 @@ flat = true
 layout_mode = 2
 theme = ExtResource("1_t3tbb")
 action_mode = 0
-text = "¿Cómo jugar?
+text = "Controles
 "
 flat = true
 

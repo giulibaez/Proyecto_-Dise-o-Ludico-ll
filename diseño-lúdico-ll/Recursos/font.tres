@@ -10,3 +10,6 @@ Button/colors/font_hover_pressed_color = Color(0.67451, 0.0431373, 0.12549, 1)
 Button/colors/font_pressed_color = Color(0.374864, 0.018747, 0.0725897, 1)
 Button/font_sizes/font_size = 40
 Button/fonts/font = ExtResource("1_enern")
+Label/colors/font_color = Color(0.67451, 0.0431373, 0.12549, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.780392)
+Label/font_sizes/font_size = 30

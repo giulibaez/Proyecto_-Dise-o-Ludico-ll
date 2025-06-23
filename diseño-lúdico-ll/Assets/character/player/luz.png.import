@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bjkyp3ngg882h"
-path="res://.godot/imported/degradado_amarillo_768x512.png-a0498681bd7ab96a24b8825d054838f3.ctex"
+uid="uid://c4g3cme3c5spd"
+path="res://.godot/imported/luz.png-7708aa66019c2ec5a726ebe1d277e4dd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/character/player/degradado_amarillo_768x512.png"
-dest_files=["res://.godot/imported/degradado_amarillo_768x512.png-a0498681bd7ab96a24b8825d054838f3.ctex"]
+source_file="res://Assets/character/player/luz.png"
+dest_files=["res://.godot/imported/luz.png-7708aa66019c2ec5a726ebe1d277e4dd.ctex"]
 
 [params]
 

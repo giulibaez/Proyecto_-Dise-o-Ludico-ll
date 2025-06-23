@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://o7dr0o7tvfny" path="res://Assets/rooms/Objetos_de_escenario.png" id="4_f0w31"]
 [ext_resource type="AudioStream" uid="uid://cdxx8finvhmev" path="res://music/sound_heart_player_slow.mp3" id="6_pgevo"]
 [ext_resource type="AudioStream" uid="uid://ero2pdox6fkq" path="res://music/sound_heart_player_fast.mp3" id="7_8w2jf"]
-[ext_resource type="Texture2D" uid="uid://bjkyp3ngg882h" path="res://Assets/character/player/degradado_amarillo_768x512.png" id="8_pgevo"]
+[ext_resource type="Texture2D" uid="uid://c4g3cme3c5spd" path="res://Assets/character/player/luz.png" id="8_pgevo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ij6vm"]
 atlas = ExtResource("2_8w2jf")
@@ -346,6 +346,7 @@ stream = ExtResource("6_pgevo")
 stream = ExtResource("7_8w2jf")
 
 [node name="Vida" type="AnimatedSprite2D" parent="Node"]
+visible = false
 texture_filter = 1
 position = Vector2(367, 6)
 scale = Vector2(0.708334, 0.75)
@@ -354,7 +355,6 @@ animation = &"Vida "
 frame_progress = 0.322845
 
 [node name="HitBoxArea" type="Area2D" parent="."]
-visible = false
 collision_layer = 4
 collision_mask = 9
 
@@ -371,18 +371,19 @@ wait_time = 0.5
 one_shot = true
 
 [node name="LinternaLight" type="PointLight2D" parent="."]
-visible = false
+y_sort_enabled = true
 enabled = false
 color = Color(1, 1, 0.6, 1)
 energy = 1.18
 texture = ExtResource("8_pgevo")
+offset = Vector2(0, -50)
 
 [node name="VisionLinterna" type="Area2D" parent="."]
-visible = false
 collision_layer = 29
 collision_mask = 13
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisionLinterna"]
+position = Vector2(0, -32)
 shape = SubResource("CircleShape2D_pgevo")
 
 [connection signal="body_entered" from="HitBoxArea" to="." method="_on_hit_box_area_body_entered"]

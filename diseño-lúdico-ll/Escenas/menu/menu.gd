@@ -10,7 +10,7 @@ func _on_jugar_pressed() -> void:
 
 
 func _on_como_jugar_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://Escenas/menu/control.tscn")
 
 
 func _on_creditos_pressed() -> void:
