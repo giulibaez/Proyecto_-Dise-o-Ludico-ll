@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://btjtgy1hjyg3p"]
+[gd_scene load_steps=4 format=3 uid="uid://btjtgy1hjyg3p"]
 
 [ext_resource type="Script" uid="uid://b1jiwu7qodgep" path="res://Escenas/rooms/map_generator.gd" id="1_6qiat"]
+[ext_resource type="Texture2D" uid="uid://dm42pnkp8yxa7" path="res://Assets/character/player/sangre_manchas.png" id="2_gdm28"]
 
 [sub_resource type="Environment" id="Environment_6qiat"]
 
@@ -11,3 +12,14 @@ script = ExtResource("1_6qiat")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_6qiat")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BloodSplatter" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_gdm28")
+expand_mode = 1

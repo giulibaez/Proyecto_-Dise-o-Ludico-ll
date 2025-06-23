@@ -172,9 +172,7 @@ texture_filter = 1
 position = Vector2(9.53674e-07, -9.53674e-07)
 scale = Vector2(1.42188, 1.42188)
 sprite_frames = SubResource("SpriteFrames_1yhye")
-animation = &"attack"
-frame = 4
-frame_progress = 1.0
+animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
 visible = false

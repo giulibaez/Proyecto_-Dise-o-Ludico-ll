@@ -11,7 +11,8 @@ var player_alive = true
 var attack_inprogress = false 
 var tiene_linterna = false
 var tiene_llave = false
-var linterna_encendida = false  # Para rastrear si la linterna está encendida
+var linterna_encendida = false  
+var blood_splatter = null 
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var heart_sound_slow = $Node/HeartSoundSlow
@@ -31,6 +32,14 @@ func _ready() -> void:
 		timer.connect("timeout", _on_attack_cooldown_timeout)
 	linterna_light.enabled = false  # Asegura que la linterna esté apagada al inicio
 	add_to_group("player")  # Para que Linterna.gd lo detecte
+	var map_generator = get_parent()
+	if map_generator:
+		blood_splatter = map_generator.get_node("CanvasLayer/BloodSplatter")  # Ruta relativa desde MapGenerator
+	if blood_splatter:
+		blood_splatter.modulate.a = 0.0  # Oculta las manchas al inicio
+	else:
+		print("Error: BloodSplatter no encontrado")
+	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
 	if player_alive:
@@ -144,12 +153,21 @@ func update_hearts_display():
 	match current_health:
 		3:
 			heart_display.frame = 0
+			if blood_splatter:
+				blood_splatter.modulate.a = 0.0  # Sin manchas
 		2:
 			heart_display.frame = 1
+			if blood_splatter:
+				blood_splatter.modulate.a = 0.3  # Manchas leves
 		1:
 			heart_display.frame = 2
+			if blood_splatter:
+				blood_splatter.modulate.a = 0.6  # Manchas más visibles
 		0:
 			heart_display.frame = 3
+			if blood_splatter:
+				blood_splatter.modulate.a = 0.8  # Manchas muy visibles
+
 
 func _on_hit_box_area_body_entered(body: Node2D) -> void:
 	if body.has_method("enemy") and not enemy_inattack_range:
