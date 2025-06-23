@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://daiipt5hwl6k0"]
+[gd_scene load_steps=59 format=3 uid="uid://daiipt5hwl6k0"]
 
 [ext_resource type="Script" uid="uid://bxpphg2i11xlo" path="res://Escenas/player/player.gd" id="1_e6cd0"]
 [ext_resource type="Texture2D" uid="uid://xu0gorlgtrtf" path="res://Assets/character/player/Character0_SwordAttack_Sword.png" id="2_xlwfv"]
@@ -393,6 +393,9 @@ animations = [{
 radius = 32.0
 height = 108.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_pgevo"]
+radius = 126.016
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 scale = Vector2(0.5, 0.5)
 collision_layer = 4
@@ -448,8 +451,17 @@ color = Color(1, 1, 0.6, 1)
 energy = 1.18
 texture = ExtResource("8_pgevo")
 
+[node name="VisionLinterna" type="Area2D" parent="."]
+collision_layer = 29
+collision_mask = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionLinterna"]
+shape = SubResource("CircleShape2D_pgevo")
+
 [connection signal="body_entered" from="HitBoxArea" to="." method="_on_hit_box_area_body_entered"]
 [connection signal="body_exited" from="HitBoxArea" to="." method="_on_hit_box_area_body_exited"]
 [connection signal="timeout" from="AttackCooldown" to="." method="_on_attack_cooldown_timeout"]
 [connection signal="timeout" from="DealAttackTimer" to="." method="_on_deal_attack_timer_timeout"]
 [connection signal="timeout" from="EnemyDamageDelayTimer" to="." method="_on_enemy_damage_delay_timer_timeout"]
+[connection signal="body_entered" from="VisionLinterna" to="." method="_on_vision_linterna_body_entered"]
+[connection signal="body_exited" from="VisionLinterna" to="." method="_on_vision_linterna_body_exited"]

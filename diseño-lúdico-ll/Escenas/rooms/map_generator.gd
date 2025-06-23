@@ -38,7 +38,8 @@ func generate_map():
 	global.reset()
 	rooms.clear()
 	taken_position.clear()
-	
+	enemy_positions.clear()
+
 	rooms = []
 	for i in range(grid_size_x * 2):
 		var row = []
@@ -87,10 +88,11 @@ func generate_map():
 		else:
 			print("No se asignó habitación en posición: ", check_pos)
 
-	# Nuevo: decidir cuántos enemigos instanciar
+	# Decidir cuántos enemigos instanciar
 	var total_enemies = randi_range(min_enemies, max_enemies)
-	global.enemigos_totales = total_enemies  # Actualizar el conteo global
+	global.enemigos_totales = total_enemies
 	var enemies_placed = 0
+	var dark_rooms = []  # Lista para almacenar posiciones de habitaciones oscurecidas
 
 	# Instanciar habitaciones
 	for pos in taken_position:
@@ -124,16 +126,16 @@ func generate_map():
 
 		rooms[x][y]["instance"] = room_instance
 
-		# Nuevo: instanciar enemigos en las habitaciones (excepto en la inicial)
+		# Instanciar enemigos en las habitaciones (excepto en la inicial)
 		if pos != origin and enemies_placed < total_enemies:
 			var enemy_scene = load(enemy_scene_path)
 			if enemy_scene:
 				var enemy_instance = enemy_scene.instantiate()
-				# Posición aleatoria dentro de la habitación (ajusta según el tamaño)
 				var enemy_offset = Vector2(randi_range(50, room_size.x - 50), randi_range(50, room_size.y - 50))
 				enemy_instance.position = physical_pos + enemy_offset
 				add_child(enemy_instance)
 				enemies_placed += 1
+				enemy_positions.append(pos)
 				print("Enemigo instanciado en habitación tipo ", room_type, " en posición: ", enemy_instance.position)
 			else:
 				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
@@ -141,7 +143,7 @@ func generate_map():
 	# Asegurar que se instancien todos los enemigos planeados
 	while enemies_placed < total_enemies:
 		var random_room_pos = taken_position[randi() % taken_position.size()]
-		if random_room_pos != origin:  # Evitar la habitación inicial
+		if random_room_pos != origin:
 			var enemy_scene = load(enemy_scene_path)
 			if enemy_scene:
 				var enemy_instance = enemy_scene.instantiate()
@@ -152,6 +154,7 @@ func generate_map():
 				enemy_instance.position = physical_pos + enemy_offset
 				add_child(enemy_instance)
 				enemies_placed += 1
+				enemy_positions.append(random_room_pos)
 				print("Enemigo adicional instanciado en habitación en posición: ", enemy_instance.position)
 			else:
 				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
@@ -168,7 +171,8 @@ func generate_map():
 
 	camera.position = origin_physical_pos + room_size / 2
 	camera.make_current()
-# Encontrar la habitación exterior (room_ext)
+
+	# Encontrar y oscurecer habitaciones adyacentes a room_ext
 	var room_ext_pos = null
 	for pos in taken_position:
 		var x = pos.x + grid_size_x
@@ -179,7 +183,6 @@ func generate_map():
 			break
 
 	if room_ext_pos:
-	# Oscurecer solo las habitaciones adyacentes a room_ext, no room_ext misma
 		var directions = [Vector2i(0, -1), Vector2i(0, 1), Vector2i(1, 0), Vector2i(-1, 0)]
 		for dir in directions:
 			var adjacent_pos = room_ext_pos + dir
@@ -187,16 +190,23 @@ func generate_map():
 				var adj_x = adjacent_pos.x + grid_size_x
 				var adj_y = adjacent_pos.y + grid_size_y
 				var adjacent_room_data = rooms[adj_x][adj_y]
-				if adjacent_room_data and adjacent_room_data["type"] != "ext":  # No oscurecer room_ext
+				if adjacent_room_data and adjacent_room_data["type"] != "ext":
 					var adjacent_room = rooms[adj_x][adj_y]["instance"]
 					if adjacent_room:
-						adjacent_room.modulate = Color(0.3, 0.3, 0.3)  # Oscurece al 10% de luz
+						adjacent_room.modulate = Color(0.3, 0.3, 0.3)
 						print("Habitación adyacente a room_ext oscurecida en posición: ", adjacent_room.position)
-						if enemy_positions.has(adjacent_pos):
-							for child in get_children():
-								if child.name.begins_with("enemy") and child.position.distance_to(adjacent_room.position) < room_size.x / 2:
-									child.modulate = Color(0.9, 0.9, 0.9)  # Oscurece al enemigo al 10% de luz
-									print("Enemigo oscurecido en posición: ", child.position)
+						dark_rooms.append(adjacent_pos)  # Guardar posición de habitación oscurecida
+						# Ocultar enemigos en esta habitación
+						print("Buscando enemigos en habitación en posición: ", adjacent_room.position)
+						for child in get_children():
+							if child.is_in_group("enemy"):
+								var distance = child.position.distance_to(adjacent_room.position)
+								print("Enemigo encontrado en posición: ", child.position, ", distancia: ", distance)
+								if distance < room_size.x * 0.75:
+									child.is_in_dark_room = true  # Marcar como en habitación oscurecida
+									child.visible = false  # Ocultar enemigo
+									print("Enemigo ocultado en posición: ", child.position)
+
 	conectar_puertas()
 
 func move_camera_to_room(pos: Vector2i):

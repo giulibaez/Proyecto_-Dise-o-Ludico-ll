@@ -20,7 +20,9 @@ var linterna_encendida = false  # Para rastrear si la linterna está encendida
 @onready var hitbox_area = $HitBoxArea
 @onready var timer = $AttackCooldown
 @onready var linterna_light = $LinternaLight  # Referencia al nodo PointLight2D
+@onready var vision_linterna: Area2D = $VisionLinterna
 var current_room: Vector2i = Vector2i.ZERO
+var enemies_in_vision: Array = []  # Lista para rastrear enemigos dentro del área
 
 func _ready() -> void:
 	animated_sprite.play("front_idle")
@@ -37,6 +39,7 @@ func _physics_process(delta: float) -> void:
 		enemy_attack()
 		attack()
 		usar_linterna()
+		update_vision_area()
 
 func _process(delta):
 	var gen = get_parent()
@@ -214,6 +217,47 @@ func obtener_llave():
 
 func usar_linterna():
 	if Input.is_action_just_pressed("use_linterna") and tiene_linterna:
-		linterna_encendida = !linterna_encendida  # Alterna entre encendido y apagado
+		linterna_encendida = !linterna_encendida
 		linterna_light.enabled = linterna_encendida
 		print("Linterna ", "encendida" if linterna_encendida else "apagada")
+		
+		# Actualizar visibilidad de enemigos en el área de visión
+		for enemy in enemies_in_vision:
+			if enemy.is_in_group("enemy") and enemy.is_in_dark_room:
+				enemy.visible = linterna_encendida
+				print("Enemigo en posición ", enemy.position, " ahora ", "visible" if linterna_encendida else "oculto")
+
+func update_vision_area():
+	# Opcional: Ajustar la posición o forma del área según la dirección del jugador
+	var collision_shape = vision_linterna.get_node("CollisionShape2D")
+	match current_direction:
+		"right":
+			collision_shape.position = Vector2(50, 0)
+		"left":
+			collision_shape.position = Vector2(-50, 0)
+		"down":
+			collision_shape.position = Vector2(0, 50)
+		"up":
+			collision_shape.position = Vector2(0, -50)
+		_:
+			collision_shape.position = Vector2(0, 0)
+
+func _on_vision_linterna_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		enemies_in_vision.append(body)
+		print("Enemigo entró en VisionLinterna: ", body.position)
+		if body.is_in_dark_room:
+			body.visible = linterna_encendida  # Mostrar solo si la linterna está encendida
+		else:
+			body.visible = true  # Siempre visible en habitaciones no oscurecidas
+		print("Enemigo en posición ", body.position, " ahora ", "visible" if body.visible else "oculto")
+
+
+func _on_vision_linterna_body_exited(body: Node2D) -> void:
+	if body.is_in_group("enemy"):
+		enemies_in_vision.erase(body)
+		if body.is_in_dark_room:
+			body.visible = false  # Ocultar si está en una habitación oscurecida
+		else:
+			body.visible = true  # Mantener visible en habitaciones no oscurecidas
+		print("Enemigo salió de VisionLinterna: ", body.position, ", ahora ", "visible" if body.visible else "oculto")

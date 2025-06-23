@@ -7,6 +7,7 @@ var player = null
 var player_inattack_zone = false
 var can_take_damage = true
 var can_attack = true
+var is_in_dark_room = false
 @export var drop_item: String = ""
 
 @onready var anim_enemy = $AnimatedSprite2D
@@ -23,6 +24,7 @@ func _ready() -> void:
 	anim_enemy.play("idle")
 	respiracion.stream = preload("res://music/Monstruo1_Respiracion.mp3")
 	play_respiracion()  # Inicia la respiración al estar idle
+	visible = !is_in_dark_room #Visible si no está en un cuarto oscuro
 
 func _physics_process(delta: float) -> void:
 	move()
@@ -136,5 +138,5 @@ func _on_take_damage_timer_timeout() -> void:
 	can_attack = true
 
 func attack():
-	if can_attack and not anim_enemy.is_playing():
+	if can_attack and anim_enemy.is_playing():
 		anim_enemy.play("attack")
