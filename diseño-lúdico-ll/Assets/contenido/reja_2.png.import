@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://csev2i178drs8"
-path="res://.godot/imported/sang.png-481616190c36db316b0e888a83bcd5c9.ctex"
+uid="uid://c7ehq373n5nlu"
+path="res://.godot/imported/reja_2.png-f6aa086132d8fef413ea962d91b9bf85.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/character/player/sang.png"
-dest_files=["res://.godot/imported/sang.png-481616190c36db316b0e888a83bcd5c9.ctex"]
+source_file="res://Assets/contenido/reja_2.png"
+dest_files=["res://.godot/imported/reja_2.png-f6aa086132d8fef413ea962d91b9bf85.ctex"]
 
 [params]
 

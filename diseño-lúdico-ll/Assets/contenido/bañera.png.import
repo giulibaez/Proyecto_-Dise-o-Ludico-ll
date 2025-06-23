@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cqjeh6wup2nqw"
-path="res://.godot/imported/sangre.png-15b4c6626da06cb46481270fe6cd4609.ctex"
+uid="uid://cg0x3ypby8nwu"
+path="res://.godot/imported/bañera.png-2b92f23f384f671b7b89b3ffc22b6bfa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/character/player/sangre.png"
-dest_files=["res://.godot/imported/sangre.png-15b4c6626da06cb46481270fe6cd4609.ctex"]
+source_file="res://Assets/contenido/bañera.png"
+dest_files=["res://.godot/imported/bañera.png-2b92f23f384f671b7b89b3ffc22b6bfa.ctex"]
 
 [params]
 

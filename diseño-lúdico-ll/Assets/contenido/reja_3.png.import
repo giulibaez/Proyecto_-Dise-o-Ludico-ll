@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dm42pnkp8yxa7"
-path="res://.godot/imported/sangre_manchas.png-abddc4c8a7a0624d014b9252f1cbe90b.ctex"
+uid="uid://dpt02364t4gf3"
+path="res://.godot/imported/reja_3.png-8b903b42ab4726b0b3e4b038c459eb05.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/character/player/sangre_manchas.png"
-dest_files=["res://.godot/imported/sangre_manchas.png-abddc4c8a7a0624d014b9252f1cbe90b.ctex"]
+source_file="res://Assets/contenido/reja_3.png"
+dest_files=["res://.godot/imported/reja_3.png-8b903b42ab4726b0b3e4b038c459eb05.ctex"]
 
 [params]
 

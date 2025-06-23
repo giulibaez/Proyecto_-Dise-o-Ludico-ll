@@ -273,8 +273,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8w2jf"]
-radius = 26.0
-height = 88.0
+radius = 22.0
+height = 52.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6njrx"]
 atlas = ExtResource("3_qgqwx")
@@ -320,21 +320,22 @@ height = 108.0
 radius = 182.011
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
+y_sort_enabled = true
 scale = Vector2(0.5, 0.5)
 collision_layer = 4
-collision_mask = 10
+collision_mask = 26
 script = ExtResource("1_e6cd0")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, 9.53674e-07)
 scale = Vector2(0.1, 0.0921875)
 sprite_frames = SubResource("SpriteFrames_ptduk")
-animation = &"death"
+animation = &"back_attack"
+offset = Vector2(0, -700)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(-2, -24)
 shape = SubResource("CapsuleShape2D_8w2jf")
-metadata/_edit_group_ = true
 
 [node name="Node" type="Node" parent="."]
 
@@ -353,6 +354,7 @@ animation = &"Vida "
 frame_progress = 0.322845
 
 [node name="HitBoxArea" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 9
 
@@ -369,12 +371,14 @@ wait_time = 0.5
 one_shot = true
 
 [node name="LinternaLight" type="PointLight2D" parent="."]
+visible = false
 enabled = false
 color = Color(1, 1, 0.6, 1)
 energy = 1.18
 texture = ExtResource("8_pgevo")
 
 [node name="VisionLinterna" type="Area2D" parent="."]
+visible = false
 collision_layer = 29
 collision_mask = 13
 
