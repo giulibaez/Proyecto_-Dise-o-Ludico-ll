@@ -3,7 +3,7 @@ extends Node2D
 @export var world_size: Vector2i = Vector2i(8, 8)
 @export var number_of_rooms: int = 5
 @export var min_enemies: int = 2  
-@export var max_enemies: int = 5
+@export var max_enemies: int = 3
 @onready var camera = $Camera2D
 var room_scene_paths = {
 	"cell": "res://Escenas/rooms/roomCell.tscn",
@@ -11,7 +11,7 @@ var room_scene_paths = {
 	"lab": "res://Escenas/rooms/room_lab.tscn",
 	"ext": "res://Escenas/rooms/room_ext.tscn"
 }
-var enemy_scene_path = "res://Escenas/enemies/enemy.tscn"  # Nuevo: ruta de la escena del enemigo
+var enemy_scene_path = "res://Escenas/enemies/enemy.tscn" 
 var enemy_positions: Array = []  # Para almacenar las posiciones de los enemigos
 var rooms = []
 var taken_position: Array = []
@@ -19,7 +19,7 @@ var grid_size_x: int
 var grid_size_y: int
 var room_size: Vector2 = Vector2(768, 512)
 var map_initialized: bool = false
-# Resto de las funciones (move_camera_to_room, is_position_valid, new_position, etc.) permanecen sin cambios
+var rooms_without_enemies: Array = []  # Almacena posiciones de habitaciones sin enemigos
 
 
 func _ready():
@@ -159,6 +159,11 @@ func generate_map():
 			else:
 				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
 
+	for pos in taken_position:
+		if pos != origin and not enemy_positions.has(pos):
+			rooms_without_enemies.append(pos)
+			print("Habitación sin enemigos detectada en posición lógica: ", pos)
+
 	var player_scene = load("res://Escenas/player/player.tscn")
 	var origin_physical_pos = Vector2(origin.x * room_size.x, origin.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
 	if player_scene:
@@ -212,6 +217,24 @@ func generate_map():
 func move_camera_to_room(pos: Vector2i):
 	var target_pos = Vector2(pos.x * room_size.x, pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y) + room_size / 2
 	camera.position = target_pos
+
+	# Verificar si la habitación no tiene enemigos y no tiene un cofre ya instanciado
+	if rooms_without_enemies.has(pos):
+		var grid_x = pos.x + grid_size_x
+		var grid_y = pos.y + grid_size_y
+		var room_data = rooms[grid_x][grid_y]
+		if room_data and not room_data.has("chest_instance"):
+			var chest_scene = load("res://Escenas/contenido_habitaciones/chest.tscn") 
+			if chest_scene:
+				var chest_instance = chest_scene.instantiate()
+				var physical_pos = Vector2(pos.x * room_size.x, pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
+				var chest_offset = Vector2(room_size.x / 2, room_size.y / 2)
+				chest_instance.position = physical_pos + chest_offset
+				add_child(chest_instance)
+				room_data["chest_instance"] = chest_instance  
+				print("Cofre instanciado en habitación sin enemigos en posición: ", chest_instance.position)
+			else:
+				print("ERROR: No se pudo cargar la escena del cofre: res://Escenas/objects/chest.tscn")
 
 func is_position_valid(pos: Vector2i) -> bool:
 	var x = pos.x + grid_size_x

@@ -138,7 +138,6 @@ func take_damage(cant: int):
 	elif current_health == 1:
 		heart_sound_fast.stream = preload("res://music/sound_heart_player_fast.mp3")
 		heart_sound_fast.play()
-		heart_sound_slow.stop()
 	if current_health == 0:
 		die()
 
@@ -280,3 +279,11 @@ func _on_vision_linterna_body_exited(body: Node2D) -> void:
 		else:
 			body.visible = true  # Mantener visible en habitaciones no oscurecidas
 		print("Enemigo salió de VisionLinterna: ", body.position, ", ahora ", "visible" if body.visible else "oculto")
+
+
+# Nueva función para aplicar cura
+func apply_heal(amount: int):
+	if current_health < max_health:
+		current_health = min(current_health + amount, max_health)
+		update_hearts_display()
+		print("Jugador curado a ", current_health, " de vida")
