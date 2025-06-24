@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 var health = 3
-var speed = 65
+var speed = 55
 var player_chase = false
 var player = null
 var player_inattack_zone = false
@@ -63,15 +63,14 @@ func take_damage(amount: int):
 	
 	if player != null:
 		var knockback_dir = (position - player.position).normalized()
-		position += knockback_dir * 25
+		position += knockback_dir * 30
 		print("Aplicando knockback")
 	if health <= 0:
 		die()
 
 func play_gemido_hurt():
 	if not gemido_hurt.is_playing():
-		gemido_hurt.stream = preload("res://music/Monstruo1_Gemido.mp3")  # Ajusta la ruta
-		gemido_hurt.play()
+		gemido_hurt.stream = preload("res://music/Monstruo1_Gemido.mp3")  
 
 func die():
 	global.enemigos_muertos += 1

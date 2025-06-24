@@ -367,7 +367,7 @@ wait_time = 3.0
 [node name="DealAttackTimer" type="Timer" parent="."]
 
 [node name="EnemyDamageDelayTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.2
 one_shot = true
 
 [node name="LinternaLight" type="PointLight2D" parent="."]

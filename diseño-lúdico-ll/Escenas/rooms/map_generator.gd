@@ -20,9 +20,9 @@ var grid_size_y: int
 var room_size: Vector2 = Vector2(768, 512)
 var map_initialized: bool = false
 var rooms_without_enemies: Array = []  # Almacena posiciones de habitaciones sin enemigos
+var candados = {}  # Diccionario para almacenar {candado: {position: Vector2, direction: String}}
 
 var candado_scene_path = "res://Escenas/contenido_habitaciones/candado.tscn"
-var candados = [] 
 var directions = {
 		"top": Vector2i(0, -1),
 		"down": Vector2i(0, 1),
@@ -289,7 +289,7 @@ func selective_new_position() -> Vector2i:
 
 
 func conectar_puertas():
-	var tile_size = Vector2(64, 64)  # Ajusta según el tamaño de las celdas en tu TileMapLayer
+	var tile_size = Vector2(64, 64)  
 	for pos in taken_position:
 		var x = pos.x + grid_size_x
 		var y = pos.y + grid_size_y
@@ -315,7 +315,7 @@ func conectar_puertas():
 						if candado_scene:
 							var candado_instance = candado_scene.instantiate()
 							var door_cell_pos = Vector2i.ZERO
-							match dir_name:  # Usar dir_name para la puerta en la habitación adyacente
+							match dir_name:
 								"top":
 									door_cell_pos = Vector2i(instance.size.x / 2, 0)
 								"down":
@@ -324,23 +324,21 @@ func conectar_puertas():
 									door_cell_pos = Vector2i(0, instance.size.y / 2)
 								"right":
 									door_cell_pos = Vector2i(instance.size.x - 1, instance.size.y / 2)
-							# Convertir coordenadas de celda a píxeles
 							var door_pos_pixels = instance.position + (Vector2(door_cell_pos) * tile_size) + (tile_size / 2)
 							candado_instance.position = door_pos_pixels
 							add_child(candado_instance)
-							candados.append(candado_instance)
+							candados[candado_instance] = {"position": door_pos_pixels, "direction": dir_name}
 							print("Candado instanciado en puerta ", dir_name, " de la habitación adyacente en posición: ", candado_instance.position)
 						else:
 							print("ERROR: No se pudo cargar la escena del candado: ", candado_scene_path)
 
 func abrir_candados():
-	for candado in candados:
-		var animated_sprite = candado.get_node("AnimatedSprite2D")
-		if animated_sprite:
-			animated_sprite.frame = 2 # Cambiar al frame de candado abierto
-			print("Candado actualizado a estado abierto en posición: ", candado.position)
-		else:
-			print("ERROR: No se encontró AnimatedSprite2D en candado en posición: ", candado.position)
+	for candado in candados.keys():
+		if is_instance_valid(candado):
+			candado.get_node("AnimatedSprite2D").frame = 1  # Cambia al frame "abierto"
+			candado.queue_free()  # Elimina el candado
+	candados.clear()  # Limpia el diccionario
+	print("Candados abiertos y eliminados")
 
 
 	for pos in taken_position:

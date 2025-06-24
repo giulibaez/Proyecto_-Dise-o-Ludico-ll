@@ -44,7 +44,7 @@ func _ready() -> void:
 	else:
 		print("Error: BloodSplatter no encontrado")
 	add_to_group("player")
-	victory_timer.wait_time = 3.0  # Esperar 3 segundos
+	victory_timer.wait_time = 1.0  # Esperar 3 segundos
 	victory_timer.one_shot = true
 	victory_timer.connect("timeout", _on_victory_timer_timeout)
 	add_child(victory_timer)
@@ -57,6 +57,7 @@ func _physics_process(delta: float) -> void:
 		attack()
 		usar_linterna()
 		update_vision_area()
+		clamp_position_to_current_room(get_parent())
 
 func _process(delta):
 	var gen = get_parent()
@@ -83,6 +84,14 @@ func _process(delta):
 		else:
 			position = clamp_position_to_current_room(gen)
 			print("Movimiento bloqueado a room_ext: necesitas la llave")
+
+	if in_room_ext and victory_timer.is_stopped():
+		var room_center = Vector2((current_room.x + gsx) * rs.x + rs.x / 2, (current_room.y + gsy) * rs.y + rs.y / 2)
+		var distance_to_center = position.distance_to(room_center)
+		print("Distancia al centro de room_ext: ", distance_to_center)
+		if distance_to_center < 100:
+			victory_timer.start()
+			print("Jugador en el centro de room_ext, iniciando temporizador de victoria")
 
 # Verificar si el jugador está en el centro de room_ext
 	if in_room_ext and not victory_timer.is_stopped():
@@ -340,6 +349,7 @@ func _can_enter_room(new_room: Vector2i, direction: String) -> bool:
 	if nx >= 0 and nx < gen.grid_size_x * 2 and ny >= 0 and ny < gen.grid_size_y * 2:
 		var neighbor_data = gen.rooms[nx][ny]
 		if neighbor_data and neighbor_data["type"] == "ext" and not door_opened:
+			print("Bloqueo en _can_enter_room, door_opened: ", door_opened)
 			return false
 	return true
 
@@ -348,22 +358,51 @@ func clamp_position_to_current_room(gen) -> Vector2:
 	var gsx = gen.grid_size_x
 	var gsy = gen.grid_size_y
 	var tile_size = 64
-	var door_margin = tile_size * 2.5
+	var door_margin = tile_size * 3.0  # Margen para interacción con el candado
 
-	var min_x = (current_room.x + gsx) * rs.x + door_margin
-	var max_x = (current_room.x + gsx) * rs.x + rs.x - door_margin
-	var min_y = (current_room.y + gsy) * rs.y + door_margin
-	var max_y = (current_room.y + gsy) * rs.y + rs.y - door_margin
+	var min_x = (current_room.x + gsx) * rs.x
+	var max_x = (current_room.x + gsx) * rs.x + rs.x
+	var min_y = (current_room.y + gsy) * rs.y
+	var max_y = (current_room.y + gsy) * rs.y + rs.y
 
 	var new_pos = position
 	var door_blocked = false
-	var near_door_to_ext = false
+	var near_candado = false
+	var candado_near = null
+	var candado_direction = ""
+
+	# Definir directions una sola vez
 	var directions = {
 		"up": Vector2i(0, -1),
 		"down": Vector2i(0, 1),
 		"left": Vector2i(-1, 0),
 		"right": Vector2i(1, 0)
 	}
+
+	# Verificar si el jugador está cerca de un candado
+	for candado in gen.candados.keys():
+		if is_instance_valid(candado):
+			var candado_pos = gen.candados[candado]["position"]
+			var distance = position.distance_to(candado_pos)
+			if distance < door_margin:
+				near_candado = true
+				candado_near = candado
+				candado_direction = gen.candados[candado]["direction"]
+				print("Cerca de candado en puerta ", candado_direction, ", posición: ", position, ", candado: ", candado_pos, ", distancia: ", distance)
+				if Input.is_action_just_pressed("interact"):
+					print("Tecla E presionada, tiene_llave: ", tiene_llave)
+					if tiene_llave:
+						door_opened = true
+						candado.get_node("AnimatedSprite2D").frame = 1  # Cambia al frame "abierto"
+						candado.queue_free()  # Elimina el candado
+						gen.candados.erase(candado)  # Elimina del diccionario
+						print("Candado abierto y eliminado en puerta ", candado_direction)
+					else:
+						print("Necesitas la llave para abrir el candado con E")
+				else:
+					print("Presiona E para interactuar con el candado")
+
+	# Bloquear movimiento hacia room_ext si no se ha abierto la puerta
 	for dir_name in directions:
 		var neighbor_pos = current_room + directions[dir_name]
 		var nx = neighbor_pos.x + gsx
@@ -373,53 +412,30 @@ func clamp_position_to_current_room(gen) -> Vector2:
 			if neighbor_data and neighbor_data["type"] == "ext" and not door_opened:
 				match dir_name:
 					"up":
-						if position.y < min_y + door_margin:
-							near_door_to_ext = true
-							if Input.is_action_just_pressed("interact") and tiene_llave:
-								door_opened = true
-								gen.abrir_candados()
-								print("Puerta a room_ext abierta con la tecla E")
-							else:
-								new_pos.y = min_y + door_margin
-								door_blocked = true
+						if position.y < min_y + tile_size:
+							new_pos.y = min_y + tile_size
+							door_blocked = true
+							print("Bloqueado en puerta superior, door_opened: ", door_opened)
 					"down":
-						if position.y > max_y - door_margin:
-							near_door_to_ext = true
-							if Input.is_action_just_pressed("interact") and tiene_llave:
-								door_opened = true
-								gen.abrir_candados()
-								print("Puerta a room_ext abierta con la tecla E")
-							else:
-								new_pos.y = max_y - door_margin
-								door_blocked = true
+						if position.y > max_y - tile_size:
+							new_pos.y = max_y - tile_size
+							door_blocked = true
+							print("Bloqueado en puerta inferior, door_opened: ", door_opened)
 					"left":
-						if position.x < min_x + door_margin:
-							near_door_to_ext = true
-							if Input.is_action_just_pressed("interact") and tiene_llave:
-								door_opened = true
-								gen.abrir_candados()
-								print("Puerta a room_ext abierta con la tecla E")
-							else:
-								new_pos.x = min_x + door_margin
-								door_blocked = true
+						if position.x < min_x + tile_size:
+							new_pos.x = min_x + tile_size
+							door_blocked = true
+							print("Bloqueado en puerta izquierda, door_opened: ", door_opened)
 					"right":
-						if position.x > max_x - door_margin:
-							near_door_to_ext = true
-							if Input.is_action_just_pressed("interact") and tiene_llave:
-								door_opened = true
-								gen.abrir_candados()
-								print("Puerta a room_ext abierta con la tecla E")
-							else:
-								new_pos.x = max_x - door_margin
-								door_blocked = true
+						if position.x > max_x - tile_size:
+							new_pos.x = max_x - tile_size
+							door_blocked = true
+							print("Bloqueado en puerta derecha, door_opened: ", door_opened)
 
-	if door_blocked and not near_door_to_ext:
-		print("Bloqueado cerca de puerta a room_ext: necesitas la llave")
-	elif near_door_to_ext and not tiene_llave:
-		print("Necesitas la llave para abrir la puerta con E")
+	if door_blocked and not near_candado:
+		print("Movimiento bloqueado a room_ext: necesitas abrir el candado")
 
 	return Vector2(clamp(new_pos.x, min_x, max_x), clamp(new_pos.y, min_y, max_y))
-
 func obtener_llave():
 	tiene_llave = true
 	print("Llave obtenida")

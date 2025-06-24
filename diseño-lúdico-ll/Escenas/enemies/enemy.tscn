@@ -176,29 +176,24 @@ sprite_frames = SubResource("SpriteFrames_1yhye")
 animation = &"death"
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
-visible = false
 texture_filter = 1
 position = Vector2(-7, 6)
 scale = Vector2(1.09375, 1.04839)
 polygon = PackedVector2Array(-12, -9, -6, -13, 9, -13, 15, -7, 16, 0, 18, 3, 27, 6, 26.5143, 12.4, 21.9429, 16.2154, 10.0571, 13.3538, 1.82857, 15.2615, -9.14285, 13.3538, -12.8, 9.53845, -15, 3)
 
 [node name="DetectionArea" type="Area2D" parent="."]
-visible = false
 collision_layer = 8
 collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
-visible = false
 position = Vector2(0, 6)
 shape = SubResource("CircleShape2D_h3jmr")
 
 [node name="HitBoxArea" type="Area2D" parent="."]
-visible = false
 collision_layer = 8
 collision_mask = 6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxArea"]
-visible = false
 position = Vector2(1, 8)
 shape = SubResource("CircleShape2D_eqnh0")
 
