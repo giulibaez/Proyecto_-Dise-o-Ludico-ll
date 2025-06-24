@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bkivjac4fpmmi" path="res://Assets/object/llave.png" id="1_xl3k2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3dala"]
-size = Vector2(24, 16)
+size = Vector2(47, 37)
 
 [node name="ItemLlave" type="Area2D"]
 texture_filter = 1

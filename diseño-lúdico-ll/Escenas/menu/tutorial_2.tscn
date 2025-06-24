@@ -1,0 +1,115 @@
+[gd_scene load_steps=8 format=3 uid="uid://b3bskogc6qccb"]
+
+[ext_resource type="Texture2D" uid="uid://ond5xckr4l13" path="res://Assets/tutorial/tutorial.png" id="1_n2dcu"]
+[ext_resource type="Script" uid="uid://bsvsuhg0kkasc" path="res://Escenas/menu/tutorial_2.gd" id="1_oo80r"]
+[ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="2_oo80r"]
+[ext_resource type="Texture2D" uid="uid://dmt4ys1bkoom7" path="res://Assets/tutorial/enemigos.png" id="3_nlsxm"]
+[ext_resource type="Texture2D" uid="uid://dcjie61c7yxqa" path="res://Assets/tutorial/atacar.png" id="4_qwcsq"]
+[ext_resource type="Texture2D" uid="uid://b72o84hvg6pef" path="res://Assets/tutorial/flecha_button.png" id="5_5yba2"]
+[ext_resource type="Texture2D" uid="uid://d1tbyyo4ra6js" path="res://Assets/rooms/degradado_negro_768x512.png" id="6_fnsny"]
+
+[node name="Tutorial2" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oo80r")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_n2dcu")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 31.0
+offset_right = 563.0
+offset_bottom = 452.0
+
+[node name="Label" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 17.0
+offset_top = 14.0
+offset_right = 17.0
+offset_bottom = 45.0
+grow_horizontal = 2
+theme = ExtResource("2_oo80r")
+text = "Ataque y enemigos"
+
+[node name="Label2" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0169014
+anchor_top = 0.484561
+anchor_right = 1.0169
+anchor_bottom = 0.800475
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_oo80r")
+text = "--Con click izquierdo atacás
+
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="enemigos" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0225352
+anchor_top = 0.118765
+anchor_right = 1.02254
+anchor_bottom = 0.434679
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_oo80r")
+text = "enemigos
+
+
+"
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect/TextureRect"]
+layout_mode = 0
+offset_left = 98.0
+offset_top = 102.0
+offset_right = 266.0
+offset_bottom = 200.0
+texture = ExtResource("3_nlsxm")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect/TextureRect/TextureRect"]
+layout_mode = 0
+offset_left = -9.0
+offset_top = 154.0
+offset_right = 159.0
+offset_bottom = 252.0
+texture = ExtResource("4_qwcsq")
+expand_mode = 1
+
+[node name="Degradado" type="TextureRect" parent="TextureRect"]
+modulate = Color(1, 1, 1, 0.517647)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_fnsny")
+
+[node name="TextureButton" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 433.0
+offset_top = 402.0
+offset_right = 593.0
+offset_bottom = 474.0
+texture_normal = ExtResource("5_5yba2")
+
+[connection signal="pressed" from="TextureRect/TextureButton" to="." method="_on_texture_button_pressed"]

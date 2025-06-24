@@ -12,6 +12,7 @@ var room_scene_paths = {
 	"ext": "res://Escenas/rooms/room_ext.tscn"
 }
 var enemy_scene_path = "res://Escenas/enemies/enemy.tscn" 
+var tutorial_scene_path = "res://Escenas/menu/tutorial_controller.tscn"
 var enemy_positions: Array = []  # Para almacenar las posiciones de los enemigos
 var rooms = []
 var taken_position: Array = []
@@ -140,6 +141,16 @@ func generate_map():
 
 		rooms[x][y]["instance"] = room_instance
 
+		# Conectar la señal del papel en la habitación inicial
+		if pos == origin:
+			for child in room_instance.get_children():
+				if child.is_in_group("paper"):
+					if child.has_signal("tutorial_triggered"):
+						child.connect("tutorial_triggered", _on_tutorial_triggered)
+						print("Señal tutorial_triggered conectado para el papel en la sala inicial")
+					else:
+						print("ERROR: El nodo Paper no tiene la señal tutorial_triggered")
+
 # Instanciar enemigos en las habitaciones (excepto en la inicial y room_ext)
 		if pos != origin and enemies_placed < total_enemies and room_type != "ext":
 			var enemy_scene = load(enemy_scene_path)
@@ -230,6 +241,33 @@ func generate_map():
 
 	conectar_puertas()
 
+
+func _on_tutorial_triggered():
+	# Crear o obtener un CanvasLayer para el tutorial
+	var canvas_layer = $TutorialCanvasLayer
+	if not canvas_layer:
+		canvas_layer = CanvasLayer.new()
+		canvas_layer.name = "TutorialCanvasLayer"
+		add_child(canvas_layer)
+	
+	var tutorial_controller_scene = load(tutorial_scene_path)
+	if tutorial_controller_scene:
+		var tutorial_controller_instance = tutorial_controller_scene.instantiate()
+		tutorial_controller_instance.z_index = 100 # Ajusta según necesidad
+		canvas_layer.add_child(tutorial_controller_instance)
+		if tutorial_controller_instance.has_signal("tutorial_completed"):
+			tutorial_controller_instance.connect("tutorial_completed", _on_tutorial_completed)
+
+			print("Controlador de tutorial iniciado y juego pausado en CanvasLayer")
+		else:
+			print("ERROR: El controlador no tiene la señal tutorial_completed")
+	else:
+		print("ERROR: No se pudo cargar la escena del controlador de tutoriales: ", tutorial_scene_path)
+
+func _on_tutorial_completed():
+	get_tree().paused = false
+	print("Tutorial completado y juego reanudado")
+	
 func move_camera_to_room(pos: Vector2i):
 	var target_pos = Vector2(pos.x * room_size.x, pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y) + room_size / 2
 	camera.position = target_pos

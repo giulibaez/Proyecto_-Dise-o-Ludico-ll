@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://b84xsmw4ly0we"]
 
 [ext_resource type="Texture2D" uid="uid://cyc2g2i0pic8f" path="res://Assets/Botones/como_jugar_fondo.png" id="1_b13fh"]
-[ext_resource type="Script" uid="uid://vvk76s6nl1fu" path="res://Escenas/menu/control.gd" id="1_o8s4x"]
+[ext_resource type="Script" uid="uid://vvk76s6nl1fu" path="res://Escenas/menu/tutorial_controller.gd" id="1_o8s4x"]
 [ext_resource type="Texture2D" uid="uid://dt4b32owdw821" path="res://Assets/Botones/controles.png" id="2_o8s4x"]
 [ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="3_q0uiw"]
 

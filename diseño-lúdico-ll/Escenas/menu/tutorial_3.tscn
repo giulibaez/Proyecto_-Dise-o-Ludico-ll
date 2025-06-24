@@ -1,0 +1,98 @@
+[gd_scene load_steps=8 format=3 uid="uid://blq7wo66uuygt"]
+
+[ext_resource type="Script" uid="uid://d0pj5uypr73lq" path="res://Escenas/menu/tutorial_3.gd" id="1_3jliu"]
+[ext_resource type="Texture2D" uid="uid://ond5xckr4l13" path="res://Assets/tutorial/tutorial.png" id="1_nogt4"]
+[ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="3_w0rcq"]
+[ext_resource type="Texture2D" uid="uid://bor08ed3g7wqk" path="res://Assets/tutorial/drop_linterna.png" id="4_sax1h"]
+[ext_resource type="Texture2D" uid="uid://b72o84hvg6pef" path="res://Assets/tutorial/flecha_button.png" id="5_eo17k"]
+[ext_resource type="Texture2D" uid="uid://cro3kdf3ywvv5" path="res://Assets/tutorial/llaves.png" id="5_w0rcq"]
+[ext_resource type="Texture2D" uid="uid://d1tbyyo4ra6js" path="res://Assets/rooms/degradado_negro_768x512.png" id="6_7ty2g"]
+
+[node name="Tutorial3" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_3jliu")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_nogt4")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
+offset_left = 211.0
+offset_top = 31.0
+offset_right = 564.0
+offset_bottom = 460.0
+
+[node name="Label" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme = ExtResource("3_w0rcq")
+text = "combate"
+
+[node name="Label2" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 33.0
+offset_right = 358.0
+offset_bottom = 406.0
+theme = ExtResource("3_w0rcq")
+text = "Si lográs sobrevivir al
+enfrentamiento… podrás robarle
+ la linterna o la llave.
+
+
+
+
+
+Pero cuidado, hacen daño"
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect/TextureRect"]
+offset_left = 2.0
+offset_top = 173.0
+offset_right = 171.0
+offset_bottom = 280.0
+texture = ExtResource("4_sax1h")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect/TextureRect/TextureRect2"]
+offset_left = 172.0
+offset_right = 341.0
+offset_bottom = 107.0
+texture = ExtResource("5_w0rcq")
+expand_mode = 1
+
+[node name="Llaves" type="Sprite2D" parent="TextureRect/TextureRect/TextureRect2"]
+position = Vector2(1096, -281)
+
+[node name="Degradado" type="TextureRect" parent="TextureRect"]
+modulate = Color(1, 1, 1, 0.517647)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_7ty2g")
+
+[node name="TextureButton" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 432.0
+offset_top = 402.0
+offset_right = 592.0
+offset_bottom = 474.0
+texture_normal = ExtResource("5_eo17k")
+
+[connection signal="pressed" from="TextureRect/TextureButton" to="." method="_on_texture_button_pressed"]

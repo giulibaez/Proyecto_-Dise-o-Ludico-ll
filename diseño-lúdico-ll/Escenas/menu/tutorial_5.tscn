@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3 uid="uid://s0wkv6r2s3mm"]
+
+[ext_resource type="Texture2D" uid="uid://ond5xckr4l13" path="res://Assets/tutorial/tutorial.png" id="1_pt801"]
+[ext_resource type="Script" uid="uid://bdnd2chj6443o" path="res://Escenas/menu/tutorial_5.gd" id="1_rj5pl"]
+[ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="2_3cby1"]
+[ext_resource type="Texture2D" uid="uid://bmhmquj3ael7c" path="res://Assets/tutorial/cofres_2.png" id="3_rj5pl"]
+[ext_resource type="Texture2D" uid="uid://d1tbyyo4ra6js" path="res://Assets/rooms/degradado_negro_768x512.png" id="4_vot21"]
+[ext_resource type="Texture2D" uid="uid://bnimmop3x5bq3" path="res://Assets/Botones/jugar_button.png" id="6_vot21"]
+
+[node name="Tutorial5" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rj5pl")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_pt801")
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
+offset_left = 207.0
+offset_top = 44.0
+offset_right = 561.0
+offset_bottom = 457.0
+
+[node name="Label" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme = ExtResource("2_3cby1")
+text = "Medicina "
+
+[node name="Label" type="Label" parent="TextureRect/TextureRect/Label"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 333.0
+offset_right = 16.0
+offset_bottom = 364.0
+grow_horizontal = 2
+theme = ExtResource("2_3cby1")
+text = "No estas solo..."
+
+[node name="TextureRect" type="TextureRect" parent="TextureRect/TextureRect"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label2" type="Label" parent="TextureRect/TextureRect"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -10.0
+offset_top = 55.0
+offset_right = 23.0
+offset_bottom = 154.0
+grow_horizontal = 2
+theme = ExtResource("2_3cby1")
+text = "La medicina está en los cofres.
+Pero no podés usarla si estás bien.
+vuelve por ella cuando duela"
+
+[node name="TextureRect2" type="TextureRect" parent="TextureRect/TextureRect"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 163.0
+offset_right = 277.0
+offset_bottom = 324.0
+texture = ExtResource("3_rj5pl")
+expand_mode = 1
+
+[node name="Degradado" type="TextureRect" parent="TextureRect"]
+modulate = Color(1, 1, 1, 0.517647)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_vot21")
+
+[node name="TextureButton" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 435.0
+offset_top = 391.0
+offset_right = 595.0
+offset_bottom = 463.0
+texture_normal = ExtResource("6_vot21")
+
+[connection signal="pressed" from="TextureRect/TextureButton" to="." method="_on_texture_button_pressed"]
