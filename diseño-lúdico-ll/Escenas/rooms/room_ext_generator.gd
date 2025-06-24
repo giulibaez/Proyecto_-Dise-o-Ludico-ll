@@ -10,6 +10,20 @@ extends Node2D
 	"left": Vector2i(3,1),
 	"right": Vector2i(5, 1)
 }
+
+var object_scene_paths = {
+	"rock": "res://Escenas/contenido_habitaciones/rock.tscn",
+	"tumor":"res://Escenas/contenido_habitaciones/tumor.tscn",
+	"dead_player": "res://Escenas/contenido_habitaciones/dead_player.tscn",
+	"pozo" : "res://Escenas/contenido_habitaciones/pozo.tscn"
+}
+var room_object_chances = {
+	"ext": ["dead_player"],  # Objetos típicos para room_ext
+	"cell": [ "rock","tumor", "dead_player"],   # Objetos típicos para room_cell
+	"main": ["rock", "pozo"],               # Objetos típicos para room_main
+	"lab": ["dead_player", "rock", "tumor"]  # Objetos típicos para room_lab
+}
+
 @export var floor_tiles: Array[Vector2i] = [Vector2i(1, 1), Vector2i(4, 1)]
 @export var floor_tile_percent: Array[float] = [0.9, 0.1]
 @export var size: Vector2i = Vector2i(12, 8)
@@ -42,6 +56,27 @@ func generate():
 			else:
 				var tile_position = select_percent_tile(rand)
 				floor_map.set_cell(position, 0, tile_position)
+	# Instanciar objetos con colisión
+	var max_objects = 2
+	var object_count = rand.randi_range(0, max_objects)
+	print("Intentando instanciar ", object_count, " objetos en ", room_type)
+	for _i in range(object_count):
+		if room_object_chances.has(room_type) and room_object_chances[room_type].size() > 0:
+			var available_objects = room_object_chances[room_type]
+			var object_type = available_objects[rand.randi() % available_objects.size()]
+			var object_scene = load(object_scene_paths[object_type])
+			if object_scene:
+				var object_instance = object_scene.instantiate()
+				var object_offset = Vector2(rand.randi_range(32, (size.x - 2) * 64), rand.randi_range(32, (size.y - 2) * 64))
+				object_instance.position = position + object_offset  # Usar la posición del nodo Room2D
+				var parent = get_parent()
+				if parent:
+					parent.add_child(object_instance)
+					print("Objeto ", object_type, " instanciado en ", room_type, " en posición: ", object_instance.position)
+				else:
+					print("Error: No se encontró el nodo padre")
+			else:
+				print("ERROR: No se pudo cargar la escena del objeto: ", object_scene_paths[object_type])
 
 func select_percent_tile(rand: RandomNumberGenerator) -> Vector2i:
 	var total_percent = 0.0

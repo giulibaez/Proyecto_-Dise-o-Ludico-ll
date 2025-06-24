@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsqcjsyx3ei6h"]
+
+[ext_resource type="Texture2D" uid="uid://bokmlslhqw1eh" path="res://Assets/contenido/pozo_piso.png" id="1_413iu"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7vo71"]
+radius = 17.0294
+
+[node name="Pozo" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0.562501, 0.562501)
+scale = Vector2(0.0518891, 0.0518891)
+texture = ExtResource("1_413iu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_7vo71")

@@ -13,14 +13,15 @@ extends Node2D
 
 var object_scene_paths = {
 	"rock": "res://Escenas/contenido_habitaciones/rock.tscn",
-	"cell_wall": "res://Escenas/contenido_habitaciones/cell_wall.tscn",
-	"dead_player": "res://Escenas/contenido_habitaciones/dead_player.tscn"
+	"tumor":"res://Escenas/contenido_habitaciones/tumor.tscn",
+	"dead_player": "res://Escenas/contenido_habitaciones/dead_player.tscn",
+	"pozo" : "res://Escenas/contenido_habitaciones/pozo.tscn"
 }
 var room_object_chances = {
-	"ext": ["rock", "dead_player"],  # Objetos típicos para room_ext
-	"cell": [ "rock", "cell_wall", "dead_player"],   # Objetos típicos para room_cell
-	"main": ["rock"],               # Objetos típicos para room_main
-	"lab": ["dead_player", "rock"]  # Objetos típicos para room_lab
+	"ext": ["dead_player"],  # Objetos típicos para room_ext
+	"cell": [ "rock","tumor", "dead_player"],   # Objetos típicos para room_cell
+	"main": ["rock", "pozo"],               # Objetos típicos para room_main
+	"lab": ["dead_player", "rock", "tumor"]  # Objetos típicos para room_lab
 }
 @export var floor_tiles: Array[Vector2i] = [Vector2i(1, 1), Vector2i(4, 1)]
 @export var floor_tile_percent: Array[float] = [0.9, 0.1]
