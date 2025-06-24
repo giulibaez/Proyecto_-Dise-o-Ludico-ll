@@ -13,6 +13,12 @@ var tiene_linterna = false
 var tiene_llave = false
 var linterna_encendida = false  
 var blood_splatter = null 
+var current_room: Vector2i = Vector2i.ZERO
+var enemies_in_vision: Array = []  # Lista para rastrear enemigos dentro del área
+
+var in_room_ext = false  # Nueva variable para rastrear si está en room_ext
+@onready var victory_timer = Timer.new()  # Temporizador para la pantalla de victoria
+var door_opened = false  # Nueva variable para rastrear si la puerta a room_ext está abierta
 
 @onready var animated_sprite = $AnimatedSprite2D
 @onready var heart_sound_slow = $Node/HeartSoundSlow
@@ -22,8 +28,6 @@ var blood_splatter = null
 @onready var timer = $AttackCooldown
 @onready var linterna_light = $LinternaLight  # Referencia al nodo PointLight2D
 @onready var vision_linterna: Area2D = $VisionLinterna
-var current_room: Vector2i = Vector2i.ZERO
-var enemies_in_vision: Array = []  # Lista para rastrear enemigos dentro del área
 
 func _ready() -> void:
 	animated_sprite.play("front_idle")
@@ -40,6 +44,10 @@ func _ready() -> void:
 	else:
 		print("Error: BloodSplatter no encontrado")
 	add_to_group("player")
+	victory_timer.wait_time = 3.0  # Esperar 3 segundos
+	victory_timer.one_shot = true
+	victory_timer.connect("timeout", _on_victory_timer_timeout)
+	add_child(victory_timer)
 
 func _physics_process(delta: float) -> void:
 	if player_alive:
@@ -61,8 +69,34 @@ func _process(delta):
 	var player_room = Vector2i(room_x, room_y)
 
 	if player_room != current_room:
-		current_room = player_room
-		gen.move_camera_to_room(current_room)
+		var direction = _get_transition_direction(player_room)
+		if _can_enter_room(player_room, direction):
+			current_room = player_room
+			gen.move_camera_to_room(current_room)
+			var nx = player_room.x + gsx
+			var ny = player_room.y + gsy
+			if nx >= 0 and nx < gen.grid_size_x * 2 and ny >= 0 and ny < gen.grid_size_y * 2:
+				var room_data = gen.rooms[nx][ny]
+				if room_data and room_data["type"] == "ext":
+					in_room_ext = true
+					print("Entraste en room_ext")
+		else:
+			position = clamp_position_to_current_room(gen)
+			print("Movimiento bloqueado a room_ext: necesitas la llave")
+
+# Verificar si el jugador está en el centro de room_ext
+	if in_room_ext and not victory_timer.is_stopped():
+		var room_center = Vector2((current_room.x + gsx) * rs.x + rs.x / 2, (current_room.y + gsy) * rs.y + rs.y / 2)
+		var distance_to_center = position.distance_to(room_center)
+		if distance_to_center < 50:  # Margen de 50 píxeles
+			victory_timer.start()
+			print("Jugador en el centro de room_ext, iniciando temporizador de victoria")
+
+
+
+func _on_victory_timer_timeout():
+	print("Tiempo de espera finalizado, mostrando pantalla de victoria")
+	get_tree().change_scene_to_file("res://Escenas/menu/victoria.tscn")
 
 func move():
 	if Input.is_action_pressed("move_right"):
@@ -229,10 +263,6 @@ func obtener_linterna():
 	tiene_linterna = true
 	print("Linterna obtenida")
 
-func obtener_llave():
-	tiene_llave = true
-	print("Llave obtenida")
-
 func usar_linterna():
 	if Input.is_action_just_pressed("use_linterna") and tiene_linterna:
 		linterna_encendida = !linterna_encendida
@@ -287,3 +317,109 @@ func apply_heal(amount: int):
 		current_health = min(current_health + amount, max_health)
 		update_hearts_display()
 		print("Jugador curado a ", current_health, " de vida")
+
+
+func _get_transition_direction(new_room: Vector2i) -> String:
+	var delta = new_room - current_room
+	if delta == Vector2i(0, -1):
+		return "up"
+	elif delta == Vector2i(0, 1):
+		return "down"
+	elif delta == Vector2i(-1, 0):
+		return "left"
+	elif delta == Vector2i(1, 0):
+		return "right"
+	return ""
+
+func _can_enter_room(new_room: Vector2i, direction: String) -> bool:
+	if direction == "":
+		return true
+	var gen = get_parent()
+	var nx = new_room.x + gen.grid_size_x
+	var ny = new_room.y + gen.grid_size_y
+	if nx >= 0 and nx < gen.grid_size_x * 2 and ny >= 0 and ny < gen.grid_size_y * 2:
+		var neighbor_data = gen.rooms[nx][ny]
+		if neighbor_data and neighbor_data["type"] == "ext" and not door_opened:
+			return false
+	return true
+
+func clamp_position_to_current_room(gen) -> Vector2:
+	var rs = gen.room_size
+	var gsx = gen.grid_size_x
+	var gsy = gen.grid_size_y
+	var tile_size = 64
+	var door_margin = tile_size * 2.5
+
+	var min_x = (current_room.x + gsx) * rs.x + door_margin
+	var max_x = (current_room.x + gsx) * rs.x + rs.x - door_margin
+	var min_y = (current_room.y + gsy) * rs.y + door_margin
+	var max_y = (current_room.y + gsy) * rs.y + rs.y - door_margin
+
+	var new_pos = position
+	var door_blocked = false
+	var near_door_to_ext = false
+	var directions = {
+		"up": Vector2i(0, -1),
+		"down": Vector2i(0, 1),
+		"left": Vector2i(-1, 0),
+		"right": Vector2i(1, 0)
+	}
+	for dir_name in directions:
+		var neighbor_pos = current_room + directions[dir_name]
+		var nx = neighbor_pos.x + gsx
+		var ny = neighbor_pos.y + gsy
+		if nx >= 0 and nx < gen.grid_size_x * 2 and ny >= 0 and ny < gen.grid_size_y * 2:
+			var neighbor_data = gen.rooms[nx][ny]
+			if neighbor_data and neighbor_data["type"] == "ext" and not door_opened:
+				match dir_name:
+					"up":
+						if position.y < min_y + door_margin:
+							near_door_to_ext = true
+							if Input.is_action_just_pressed("interact") and tiene_llave:
+								door_opened = true
+								gen.abrir_candados()
+								print("Puerta a room_ext abierta con la tecla E")
+							else:
+								new_pos.y = min_y + door_margin
+								door_blocked = true
+					"down":
+						if position.y > max_y - door_margin:
+							near_door_to_ext = true
+							if Input.is_action_just_pressed("interact") and tiene_llave:
+								door_opened = true
+								gen.abrir_candados()
+								print("Puerta a room_ext abierta con la tecla E")
+							else:
+								new_pos.y = max_y - door_margin
+								door_blocked = true
+					"left":
+						if position.x < min_x + door_margin:
+							near_door_to_ext = true
+							if Input.is_action_just_pressed("interact") and tiene_llave:
+								door_opened = true
+								gen.abrir_candados()
+								print("Puerta a room_ext abierta con la tecla E")
+							else:
+								new_pos.x = min_x + door_margin
+								door_blocked = true
+					"right":
+						if position.x > max_x - door_margin:
+							near_door_to_ext = true
+							if Input.is_action_just_pressed("interact") and tiene_llave:
+								door_opened = true
+								gen.abrir_candados()
+								print("Puerta a room_ext abierta con la tecla E")
+							else:
+								new_pos.x = max_x - door_margin
+								door_blocked = true
+
+	if door_blocked and not near_door_to_ext:
+		print("Bloqueado cerca de puerta a room_ext: necesitas la llave")
+	elif near_door_to_ext and not tiene_llave:
+		print("Necesitas la llave para abrir la puerta con E")
+
+	return Vector2(clamp(new_pos.x, min_x, max_x), clamp(new_pos.y, min_y, max_y))
+
+func obtener_llave():
+	tiene_llave = true
+	print("Llave obtenida")

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cq2v8yja588qm" path="res://Assets/contenido/tumor .png" id="1_j3x7u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2p2s2"]
-size = Vector2(20, 7)
+size = Vector2(29, 8)
 
 [node name="Tumor" type="StaticBody2D"]
 y_sort_enabled = true
@@ -11,11 +11,11 @@ collision_layer = 17
 collision_mask = 5
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-2.38419e-07, 0)
-scale = Vector2(0.0265385, 0.0265385)
+position = Vector2(-7.15256e-07, -1)
+scale = Vector2(0.0337821, 0.0337821)
 texture = ExtResource("1_j3x7u")
 offset = Vector2(0, -200)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -1.5)
+position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_2p2s2")

@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://dxe17on277d1b"]
+
+[ext_resource type="Texture2D" uid="uid://d01aieh3efqxc" path="res://Assets/contenido/candado_cerrado .png" id="1_v8ime"]
+[ext_resource type="Texture2D" uid="uid://csbwskea46wmt" path="res://Assets/contenido/candado_abiero.png" id="2_5chub"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sg50g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_v8ime")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_5chub")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s421u"]
+size = Vector2(12, 14)
+
+[node name="StaticBody2D" type="StaticBody2D"]
+modulate = Color(0.462338, 0.270404, 0.0100793, 1)
+texture_filter = 1
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.0646067, 0.0646067)
+sprite_frames = SubResource("SpriteFrames_sg50g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_s421u")

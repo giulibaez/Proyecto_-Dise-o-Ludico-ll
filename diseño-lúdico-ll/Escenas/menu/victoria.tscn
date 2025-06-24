@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://dl0wwvk2hbevl"]
+
+[ext_resource type="Script" uid="uid://cj1c4vef3ujq1" path="res://Escenas/menu/victoria.gd" id="1_p3idp"]
+[ext_resource type="Texture2D" uid="uid://bg8vuhhfpofnq" path="res://Assets/victory_screen.png" id="1_yrasm"]
+[ext_resource type="Theme" uid="uid://cm30iadd0j6is" path="res://Recursos/font.tres" id="2_p3idp"]
+
+[node name="victoria" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p3idp")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_yrasm")
+expand_mode = 1
+
+[node name="VolverAlMenu" type="Button" parent="."]
+layout_mode = 0
+offset_top = 464.0
+offset_right = 160.0
+offset_bottom = 512.0
+theme = ExtResource("2_p3idp")
+text = "Volver al menu"
+flat = true
+
+[node name="Salir" type="Button" parent="."]
+layout_mode = 0
+offset_left = 608.0
+offset_top = 464.0
+offset_right = 768.0
+offset_bottom = 512.0
+theme = ExtResource("2_p3idp")
+text = "Salir"
+flat = true
+
+[connection signal="pressed" from="VolverAlMenu" to="." method="_on_volver_al_menu_pressed"]
+[connection signal="pressed" from="Salir" to="." method="_on_salir_pressed"]

@@ -21,6 +21,20 @@ var room_size: Vector2 = Vector2(768, 512)
 var map_initialized: bool = false
 var rooms_without_enemies: Array = []  # Almacena posiciones de habitaciones sin enemigos
 
+var candado_scene_path = "res://Escenas/contenido_habitaciones/candado.tscn"
+var candados = [] 
+var directions = {
+		"top": Vector2i(0, -1),
+		"down": Vector2i(0, 1),
+		"left": Vector2i(-1, 0),
+		"right": Vector2i(1, 0)
+	}
+var opposite_directions = {
+		"top": "down",
+		"down": "top",
+		"left": "right",
+		"right": "left"
+	}
 
 func _ready():
 	if map_initialized:
@@ -126,8 +140,8 @@ func generate_map():
 
 		rooms[x][y]["instance"] = room_instance
 
-		# Instanciar enemigos en las habitaciones (excepto en la inicial)
-		if pos != origin and enemies_placed < total_enemies:
+# Instanciar enemigos en las habitaciones (excepto en la inicial y room_ext)
+		if pos != origin and enemies_placed < total_enemies and room_type != "ext":
 			var enemy_scene = load(enemy_scene_path)
 			if enemy_scene:
 				var enemy_instance = enemy_scene.instantiate()
@@ -140,15 +154,17 @@ func generate_map():
 			else:
 				print("ERROR: No se pudo cargar la escena del enemigo: ", enemy_scene_path)
 
-	# Asegurar que se instancien todos los enemigos planeados
+
+# Asegurar que se instancien todos los enemigos planeados
 	while enemies_placed < total_enemies:
 		var random_room_pos = taken_position[randi() % taken_position.size()]
-		if random_room_pos != origin:
+		var x = random_room_pos.x + grid_size_x
+		var y = random_room_pos.y + grid_size_y
+		var room_data = rooms[x][y]
+		if random_room_pos != origin and room_data["type"] != "ext":
 			var enemy_scene = load(enemy_scene_path)
 			if enemy_scene:
 				var enemy_instance = enemy_scene.instantiate()
-				var x = random_room_pos.x + grid_size_x
-				var y = random_room_pos.y + grid_size_y
 				var physical_pos = Vector2(random_room_pos.x * room_size.x, random_room_pos.y * room_size.y) + Vector2(grid_size_x * room_size.x, grid_size_y * room_size.y)
 				var enemy_offset = Vector2(randi_range(50, room_size.x - 50), randi_range(50, room_size.y - 50))
 				enemy_instance.position = physical_pos + enemy_offset
@@ -271,19 +287,61 @@ func selective_new_position() -> Vector2i:
 	print("selective_new_position no encontró posición válida, devolviendo Vector2i.ZERO")
 	return Vector2i.ZERO
 
+
 func conectar_puertas():
-	var directions = {
-		"top": Vector2i(0, -1),
-		"down": Vector2i(0, 1),
-		"left": Vector2i(-1, 0),
-		"right": Vector2i(1, 0)
-	}
-	var opposite_directions = {
-		"top": "down",
-		"down": "top",
-		"left": "right",
-		"right": "left"
-	}
+	var tile_size = Vector2(64, 64)  # Ajusta según el tamaño de las celdas en tu TileMapLayer
+	for pos in taken_position:
+		var x = pos.x + grid_size_x
+		var y = pos.y + grid_size_y
+		var room_data = rooms[x][y]
+		if room_data == null or not "instance" in room_data:
+			continue
+
+		var instance = room_data["instance"]
+		for dir_name in directions.keys():
+			var neighbor_pos = pos + directions[dir_name]
+			if taken_position.has(neighbor_pos):
+				var nx = neighbor_pos.x + grid_size_x
+				var ny = neighbor_pos.y + grid_size_y
+				var neighbor_data = rooms[nx][ny]
+				if neighbor_data and "instance" in neighbor_data:
+					instance.abrir_puerta(dir_name, Vector2i.ZERO, 0)
+					var neighbor_instance = neighbor_data["instance"]
+					neighbor_instance.abrir_puerta(opposite_directions[dir_name], Vector2i.ZERO, 0)
+
+					# Verificar si la habitación vecina es de tipo "ext"
+					if neighbor_data["type"] == "ext":
+						var candado_scene = load(candado_scene_path)
+						if candado_scene:
+							var candado_instance = candado_scene.instantiate()
+							var door_cell_pos = Vector2i.ZERO
+							match dir_name:  # Usar dir_name para la puerta en la habitación adyacente
+								"top":
+									door_cell_pos = Vector2i(instance.size.x / 2, 0)
+								"down":
+									door_cell_pos = Vector2i(instance.size.x / 2, instance.size.y - 1)
+								"left":
+									door_cell_pos = Vector2i(0, instance.size.y / 2)
+								"right":
+									door_cell_pos = Vector2i(instance.size.x - 1, instance.size.y / 2)
+							# Convertir coordenadas de celda a píxeles
+							var door_pos_pixels = instance.position + (Vector2(door_cell_pos) * tile_size) + (tile_size / 2)
+							candado_instance.position = door_pos_pixels
+							add_child(candado_instance)
+							candados.append(candado_instance)
+							print("Candado instanciado en puerta ", dir_name, " de la habitación adyacente en posición: ", candado_instance.position)
+						else:
+							print("ERROR: No se pudo cargar la escena del candado: ", candado_scene_path)
+
+func abrir_candados():
+	for candado in candados:
+		var animated_sprite = candado.get_node("AnimatedSprite2D")
+		if animated_sprite:
+			animated_sprite.frame = 2 # Cambiar al frame de candado abierto
+			print("Candado actualizado a estado abierto en posición: ", candado.position)
+		else:
+			print("ERROR: No se encontró AnimatedSprite2D en candado en posición: ", candado.position)
+
 
 	for pos in taken_position:
 		var x = pos.x + grid_size_x
